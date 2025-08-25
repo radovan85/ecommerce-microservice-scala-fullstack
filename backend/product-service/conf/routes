@@ -1,0 +1,18 @@
+#Products routes
+GET     /api/products            com.radovan.play.controllers.ProductController.listAllProducts
+GET     /api/products/getAllImages            com.radovan.play.controllers.ProductController.getAllImages
+POST    /api/products            com.radovan.play.controllers.ProductController.createProduct
+GET     /api/products/:id      com.radovan.play.controllers.ProductController.getProductDetails(id:Int)
+PUT     /api/products/:id       com.radovan.play.controllers.ProductController.updateProduct(id:Int)
+DELETE  /api/products/:id       com.radovan.play.controllers.ProductController.deleteProduct(id:Int)
+POST    /api/products/storeImage/:productId   com.radovan.play.controllers.ProductController.uploadProductImage(productId:Int)
+
+#Categories routes
+GET     /api/categories         com.radovan.play.controllers.ProductCategoryController.listAll
+POST    /api/categories          com.radovan.play.controllers.ProductCategoryController.addCategory
+GET     /api/categories/:id   com.radovan.play.controllers.ProductCategoryController.getCategoryDetails(id:Int)
+PUT     /api/categories/:id    com.radovan.play.controllers.ProductCategoryController.updateCategory(id:Int)
+DELETE  /api/categories/:id    com.radovan.play.controllers.ProductCategoryController.deleteCategory(id:Int)
+
+#Health
+GET     /api/health     com.radovan.play.controllers.HealthController.healthCheck
