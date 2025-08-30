@@ -1,0 +1,13 @@
+# Routes
+
+# cart
+GET     /api/cart/getMyItems              com.radovan.play.controllers.CartController.getMyItems
+DELETE  /api/cart/clearCart               com.radovan.play.controllers.CartController.clearCart
+GET     /api/cart/getMyCart               com.radovan.play.controllers.CartController.getMyCart
+GET     /api/cart/validateCart            com.radovan.play.controllers.CartController.validateCart
+POST    /api/cart/addCartItem/:productId  com.radovan.play.controllers.CartController.addCartItem(productId: Int)
+DELETE  /api/cart/deleteItem/:itemId      com.radovan.play.controllers.CartController.deleteItem(itemId: Int)
+
+# health
+GET     /api/health                       com.radovan.play.controllers.HealthController.healthCheck
+

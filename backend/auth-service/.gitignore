@@ -1,0 +1,70 @@
+## General
+*.class
+*.log
+*.tmp
+*.bak
+*.swp
+*.out
+*.pid
+*.gz
+*.lock
+*.DS_Store
+*.orig
+*.rej
+hs_err_pid*
+
+## SBT specific
+target/
+project/boot/
+project/build/target/
+project/build/lib_managed/
+project/build/src_managed/
+project/plugins/lib_managed/
+project/plugins/target/
+project/plugins/src_managed/
+project/plugins/project/
+lib_managed/
+src_managed/
+.bsp/
+.metals/
+.bloop/
+metals.sbt
+
+## Test & Coverage
+/test-output/
+/coverage/
+/jacoco.exec
+/target/test-reports/
+
+## IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+*.eml
+*.sublime-*
+*.vscode/
+*.launch
+*.settings/
+*.classpath
+*.project
+*.factorypath
+.ensime*
+.cache
+
+## Docker / Terraform
+docker-compose.override.yml
+*.tfstate
+*.tfstate.*
+.terraform/
+
+## Logs
+logs/
+log/
+target/logs/
+*.log
+*.log.*
+
+## Misc
+build/
+tmp/
