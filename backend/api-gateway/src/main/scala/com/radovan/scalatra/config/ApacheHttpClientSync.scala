@@ -40,6 +40,12 @@ object ApacheHttpClientSync {
     client.execute(request, responseHandler)
   }
 
+  def get(url: String, headers: Map[String, String] = Map.empty): (Int, String) = {
+    val request = new HttpGet(url)
+    applyStandardHeaders(request, headers)
+    client.execute(request, responseHandler)
+  }
+
   def put(url: String, body: String, headers: Map[String, String] = Map.empty): (Int, String) = {
     val request = new HttpPut(url)
     val entity = new StringEntity(body, ContentType.create("application/json", "UTF-8"))

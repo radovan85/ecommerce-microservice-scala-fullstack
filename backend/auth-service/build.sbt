@@ -26,3 +26,5 @@ lazy val root = (project in file("."))
       "io.nats" % "jnats" % "2.21.4",
     )
   )
+
+enablePlugins(JavaAppPackaging)

@@ -33,7 +33,7 @@ class ProductController @Inject()(
     new ResponsePackage(productService.getProductById(productId), HttpStatus.SC_OK).toResult
   }
 
-  def createProduct():Action[AnyContent] = securedAction { secured =>
+  def createProduct:Action[AnyContent] = securedAction { secured =>
     onlyAdmin(secured){
       val json = Json.stringify(secured.body.asJson.getOrElse(Json.obj()))
       val product = new JSONDeserializer[ProductDto]()

@@ -75,7 +75,7 @@ class OrderServiceImpl extends OrderService {
 
       val orderItemDto = new OrderItemDto
       orderItemDto.setOrderId(storedOrder.getOrderId())
-      orderItemDto.setPrice(itemNode.get("price").asInt())
+      orderItemDto.setPrice(itemNode.get("price").floatValue())
       orderItemDto.setQuantity(quantity)
       orderItemDto.setProductName(productName)
       orderItemDto.setProductPrice(productPrice)

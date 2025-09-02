@@ -30,7 +30,7 @@ class ProductCategoryController @Inject()(
     new ResponsePackage(categoryService.getCategoryById(categoryId), HttpStatus.SC_OK).toResult
   }
 
-  def addCategory(): Action[AnyContent] = securedAction { secured =>
+  def addCategory: Action[AnyContent] = securedAction { secured =>
     onlyAdmin(secured) {
       val json = Json.stringify(secured.body.asJson.getOrElse(Json.obj()))
       val category = new JSONDeserializer[ProductCategoryDto]()

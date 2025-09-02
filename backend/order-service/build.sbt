@@ -7,8 +7,6 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.13.16"
 
-PlayKeys.devSettings := Seq("play.server.http.port" -> "9003")
-
 libraryDependencies ++= Seq(
   guice,
   jdbc,
@@ -36,7 +34,8 @@ libraryDependencies ++= Seq(
   "io.jsonwebtoken" % "jjwt-jackson" % "0.12.5" % "runtime",
   "com.auth0" % "java-jwt" % "4.4.0",
   "com.github.ben-manes.caffeine" % "caffeine" % "3.2.0",
-  "org.apache.httpcomponents.client5" % "httpclient5" % "5.4.4"
+  "org.apache.httpcomponents.client5" % "httpclient5" % "5.4.4",
+
 )
 
 

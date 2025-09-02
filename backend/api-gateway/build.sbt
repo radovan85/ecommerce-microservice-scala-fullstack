@@ -3,7 +3,7 @@ val ScalatraVersion = "3.1.1"
 ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / organization := "com.radovan.scalatra"
 
-enablePlugins(SbtTwirl, SbtWar, RevolverPlugin)
+enablePlugins(SbtTwirl, SbtWar, RevolverPlugin, JavaAppPackaging)
 
 lazy val hello = (project in file("."))
   .settings(
@@ -30,9 +30,12 @@ lazy val hello = (project in file("."))
       "org.apache.pekko" %% "pekko-stream" % "1.0.2",
       "org.apache.pekko" %% "pekko-http" % "1.0.1",
       "org.apache.pekko" %% "pekko-http-spray-json" % "1.0.1",
-      "com.google.inject" % "guice" % "7.0.0"
+      "com.google.inject" % "guice" % "7.0.0",
+      "io.micrometer" % "micrometer-registry-prometheus" % "1.14.10"
 
     ),
+
+
 
     watchSources ++= Seq(
       baseDirectory.value / "src" / "main" / "scala",

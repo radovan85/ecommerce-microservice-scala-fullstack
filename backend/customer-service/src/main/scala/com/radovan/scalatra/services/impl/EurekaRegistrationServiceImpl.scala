@@ -21,7 +21,7 @@ class EurekaRegistrationServiceImpl @Inject() (
 
   implicit val ec: ExecutionContext = system.dispatcher
 
-  private val eurekaServerUrl = "http://localhost:8761/eureka/apps"
+  private val eurekaServerUrl = "http://eureka-server:8761/eureka/apps"
   private val appName = "customer-service"
   private val port = 8083
 
@@ -44,7 +44,7 @@ class EurekaRegistrationServiceImpl @Inject() (
       instanceData.put("hostName", hostname)
       instanceData.put("ipAddr", ipAddr)
       instanceData.put("statusPageUrl", s"http://$ipAddr:$port/info")
-      instanceData.put("healthCheckUrl", s"http://$ipAddr:$port/health")
+      instanceData.put("healthCheckUrl", s"http://$ipAddr:$port/api/health")
       instanceData.put("homePageUrl", s"http://$ipAddr:$port/")
       instanceData.put("vipAddress", "api-gateway")
       instanceData.put("secureVipAddress", "api-gateway")

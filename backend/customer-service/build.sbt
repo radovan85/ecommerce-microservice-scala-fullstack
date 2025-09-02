@@ -3,6 +3,8 @@ val ScalatraVersion = "3.1.1"
 ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / organization := "com.radovan.scalatra"
 
+enablePlugins(SbtTwirl, SbtWar, RevolverPlugin, JavaAppPackaging)
+
 lazy val hello = (project in file("."))
   .settings(
     name := "customer-service",
