@@ -32,9 +32,13 @@ class JpaPersistence {
   @Bean def getHikariDataSource: HikariDataSource = {
     val dataSource = new HikariDataSource
     dataSource.setDriverClassName("org.postgresql.Driver")
-    dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/ecommerce-db")
-    dataSource.setUsername("postgres")
-    dataSource.setPassword("1111")
+    val dbUrl = System.getenv("DB_URL")
+    val dbPassword = System.getenv("DB_PASSWORD")
+    val dbUsername = System.getenv("DB_USERNAME")
+    if (dbUrl == null || dbUsername == null || dbPassword == null) throw new IllegalStateException("Database environment variables are missing!")
+    dataSource.setJdbcUrl(dbUrl)
+    dataSource.setUsername(dbUsername)
+    dataSource.setPassword(dbPassword)
     dataSource
   }
 

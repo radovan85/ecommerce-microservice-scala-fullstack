@@ -15,9 +15,13 @@ class HibernateUtil {
     try {
       // 🔧 Hikari konfiguracija za PostgreSQL
       val hikariConfig = new HikariConfig()
-      hikariConfig.setJdbcUrl("jdbc:postgresql://localhost:5432/ecommerce-db")
-      hikariConfig.setUsername("postgres")
-      hikariConfig.setPassword("1111") // 🔐 Izmeni po potrebi
+      val dbUrl = System.getenv("DB_URL")
+      val dbPassword = System.getenv("DB_PASSWORD")
+      val dbUsername = System.getenv("DB_USERNAME")
+      if (dbUrl == null || dbUsername == null || dbPassword == null) throw new IllegalStateException("Database environment variables are missing!")
+      hikariConfig.setJdbcUrl(dbUrl)
+      hikariConfig.setUsername(dbUsername)
+      hikariConfig.setPassword(dbPassword)
       hikariConfig.setDriverClassName("org.postgresql.Driver")
       hikariConfig.setMaximumPoolSize(10)
       hikariConfig.setMinimumIdle(2)
