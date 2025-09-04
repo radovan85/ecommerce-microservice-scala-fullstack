@@ -1,0 +1,96 @@
+# === JWT Configuration ===
+jwt:
+  expiration: 7200
+  private-key: |
+    -----BEGIN PRIVATE KEY-----
+    MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCugC5RPMTMFM+S
+    92/rDjF+xR8JM3KNvLcVEOx1/ofdHZyHaKalw6Gi1dXk5ldr0q/FwYCJZ40m0Pwc
+    6k1lWx4awEqNgS7mok2XFXLvOKRX6cFyr3/VSp5YbZ739KCzUanlw9uAR4uRu1Be
+    RewA811gjEZpPV+RNlmsZTxXIM64nUpjmtahhzcnskuecele0CCzbNdXULwOdPhr
+    ua5fMTQZXGVic0lpHzqTvnlHtgEDvEt4k/WghZfMphcGJWb22KUm8V6q7xtyUjAZx
+    SthG8C0urQPbbIftnPbhRIHnrVTQZOkmYfWLWEBm83M064nc8S7vVmaFD5S4r5qIp
+    5MPW/vAgMBAAECggEAMMXP7FHVWYs5h0TUibjSWbHj3lD8ZCRKcb9ksAgf1kwX+3r
+    jFTLMQzSMT6mX5qGhEl9mu0DvoVlJFhXg4wLoM6bqT4m7X6gekqtij/1fZdkGgjUO
+    QEHWZzXgeEJuBiC9oWQwPjcBCg72RBs7/voGb91VMsX+J5quzrIO/vVDAjMxqZTP3
+    SmhK6ldpI+JGA/X/33i1N/Wpi7vPv23t5nBFTGqYuijnj8zRl9qoYPnkCouLCPtMP
+    bVOeVbO2CTaNBuaeAzOrvrWKIolGfBHxVfNWyUD+OuR/Ei30Dlivp0QMOcoipYJcF
+    MkxTNNuiEWau6ySXEhifrQK2T3UBy6p1tlQKBgQC/x/pG7TJFlJEj89h0E4I//o9F
+    TcJesMgkODTV/vDA7UvAc7kJ5UKX2BnUmkpv0bZHmEcqBdGxvu/YO0oBrMzNB1gIq
+    Aj5oSAVp0gIy5zyIToXQGbPtaSPQvo5NWePyDzVJcPDNw3kfYpv2gEX6LKArDe4Xv
+    b44XgW2bg1fKXSawKBgQDo7t+0UGtpdEqmzCVIcBFz9PPmLKdaWpXXASFJTyjtHGN
+    GRib2+cxjfCKFvHUh5+gsG5VjM0g78CUnmnuYXXCVvdSQRR0gGPCfyBQO8YEmmRh8
+    miV7WxM68Hd+Ur4394qyGiPv0bAWonlFsNVEQQgogl3aQLu+OgpOMR4wyAphjQKBg
+    B3YajuVeEhZyYiVzy6pRpDc9cDsS/5edpckZByVczQi+bH2kGpY0lc9Gy/53vGt6j
+    cUHKcOhsaplzvIZkkCclDJ/spCFDt89rhH8y7jOQZ5Y0fxDs7uTrC41KYIiJhYqhb
+    lrKR5seDIJL4paBgnb3gU1QsNRFQRCpZLxZ4VSt0HAoGAbA40FG+iBF+AKfRV706d
+    qg8d/c8FK3MOQ5kwmdNxBt2+Z+EvPi8PU69ITIXqSHpOR/fbyxMFFVkHw2F0qG/gR
+    Ha1Xt/Q7QzkwxqLw4rhAMjQhSz06k6LkzHuHNnBiDD7VDewKBY7+6QPYfbwWCNa53
+    /ijdatwUcndLJwcOy7dBkCgYEAnkCTKO3IvEbMI2QEAw57fv6xonsvxv8xDe1QEoa
+    yTHs6SHo/cbaNvLOhfDS3pK4krgPcO4rE2R9jaXYliS84cTOyvaHJfTy1NvA9KxjN
+    rvOI1/6Rz8Nih4bADDPBenwjuFSkmBgd/CqZCSkHK4EpD7sO8DOZbhB+LQHl2hERI
+    2U=
+    -----END PRIVATE KEY-----
+  public-key: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAroAuUTzEzBTPkvdv6w4x
+    fsUfCTNyjby3FRDsdf6H3R2ch2impcOhotXV5OZXa9KvxcGAiWeNJtD8HOpNZVse
+    GsBKjYEu5qJNlxVy7zikV+nBcq9/1UqeWG2e9/Sgs1Gp5cPbgEeLkbtQXkXsAPNd
+    YIxGaT1fkTZZrGU8VyDOuJ1KY5rWoYc3J7JLnnHpXtAgs2zXV1C8DnT4a7muXzE0G
+    VxlYnNJaR86k755R7YBA7xLeJP1oIWXzKYXBiVm9tilJvFequ8bclIwGcUrYRvAt
+    Lq0D22yH7Zz24USB561U0GTpJmH1i1hAZvNzNOuJ3PEu71ZmhQ+UuK+aiKeTD1v7w
+    IDAQAB
+    -----END PUBLIC KEY-----
+
+# === Spring Configuration ===
+spring:
+  application:
+    name: auth-service
+
+  main:
+    allow-circular-references: true
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres:5432/ecommerce-db
+    username: postgres
+    password: "1111"
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+
+# === Server Port ===
+server:
+  port: 8081
+
+# === Eureka Client ===
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: auth-service
+    nonSecurePort: 8081
+    preferIpAddress: false
+    appname: auth-service
+
+# === Management / Actuator ===
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+# === Ribbon (optional legacy config) ===
+ribbon:
+  eureka:
+    enabled: false

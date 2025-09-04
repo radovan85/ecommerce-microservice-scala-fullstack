@@ -77,6 +77,7 @@ class PrometheusServiceImpl @Inject() (registry: MeterRegistry) extends Promethe
 
   override def updateActiveSessions(): Unit = activeSessionsGauge.value()
 
+<<<<<<< HEAD
   override def updateHttpStatusCount(statusCode: Int): Unit = {
     val statusClass = statusCode / 100
     statusClass match {
@@ -88,6 +89,15 @@ class PrometheusServiceImpl @Inject() (registry: MeterRegistry) extends Promethe
   }
 
 
+=======
+  override def updateHttpStatusCount(statusCode: Int): Unit = statusCode match {
+    case 200 => httpStatusCounter200.increment()
+    case 400 => httpStatusCounter400.increment()
+    case 500 => httpStatusCounter500.increment()
+    case _   => () // ignore others for now
+  }
+
+>>>>>>> 5b997bc28e9eae90ccd8ac621149bafaa1f732f4
   override def updateExternalApiLatency(duration: Double): Unit =
     externalApiLatencyCounter.increment(duration)
 }

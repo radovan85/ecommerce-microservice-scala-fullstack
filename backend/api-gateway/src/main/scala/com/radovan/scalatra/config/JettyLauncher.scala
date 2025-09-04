@@ -33,6 +33,7 @@ object JettyLauncher {
       eurekaRegistrationService.registerService()
 
 
+<<<<<<< HEAD
       val apiGatewayController = new ApiGatewayController(apiGatewayService,prometheusService)
       val healthController = new HealthController(prometheusService)
       val prometheusController = new PrometheusController(prometheusRegistry, urlProvider)
@@ -40,6 +41,15 @@ object JettyLauncher {
       context.addServlet(new ServletHolder("apiGatewayController", apiGatewayController), "/api/*")
       context.addServlet(new ServletHolder("healthController", healthController), "/api/health/*")
       context.addServlet(new ServletHolder("prometheusController", prometheusController), "/prometheus/*")
+=======
+      val apiGatewayController = new ApiGatewayController(apiGatewayService)
+      val healthController = new HealthController()
+      val prometheusController = new PrometheusController(prometheusService, prometheusRegistry,urlProvider)
+
+      context.addServlet(new ServletHolder("apiGatewayController", apiGatewayController), "/api/*")
+      context.addServlet(new ServletHolder("healthController", healthController), "/api/health/*")
+      context.addServlet(new ServletHolder("prometheusController", prometheusController), "/actuator/*")
+>>>>>>> 5b997bc28e9eae90ccd8ac621149bafaa1f732f4
 
       println("✅ Server started at http://localhost:8080")
       println("✅ Health check: http://localhost:8080/api/health")

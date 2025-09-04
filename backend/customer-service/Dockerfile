@@ -16,4 +16,8 @@ RUN mv /app/customer-service-0.1.0-SNAPSHOT /app/customer-service
 
 RUN chmod +x /app/customer-service/bin/customer-service
 
+<<<<<<< HEAD
 CMD ["/bin/bash", "-c", "/app/customer-service/bin/customer-service"]
+=======
+CMD ["/bin/bash", "-c", "/app/customer-service/bin/customer-service"]
+>>>>>>> 5b997bc28e9eae90ccd8ac621149bafaa1f732f4

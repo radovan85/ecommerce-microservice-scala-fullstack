@@ -35,7 +35,10 @@ libraryDependencies ++= Seq(
   "com.auth0" % "java-jwt" % "4.4.0",
   "com.github.ben-manes.caffeine" % "caffeine" % "3.2.0",
   "org.apache.httpcomponents.client5" % "httpclient5" % "5.4.4",
+<<<<<<< HEAD
   "io.micrometer" % "micrometer-registry-prometheus" % "1.14.10"
+=======
+>>>>>>> 5b997bc28e9eae90ccd8ac621149bafaa1f732f4
 
 )
 

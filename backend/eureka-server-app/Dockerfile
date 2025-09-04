@@ -15,4 +15,8 @@ RUN chmod +x /app/eureka-server-app/bin/eureka-server-app
 
 EXPOSE 8761
 
+<<<<<<< HEAD
 CMD ["/bin/bash", "-c", "/app/eureka-server-app/bin/eureka-server-app"]
+=======
+CMD ["/bin/bash", "-c", "/app/eureka-server-app/bin/eureka-server-app"]
+>>>>>>> 5b997bc28e9eae90ccd8ac621149bafaa1f732f4

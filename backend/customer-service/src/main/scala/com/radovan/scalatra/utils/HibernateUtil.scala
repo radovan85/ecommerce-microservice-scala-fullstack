@@ -21,7 +21,11 @@ class HibernateUtil {
       if (dbUrl == null || dbUsername == null || dbPassword == null) throw new IllegalStateException("Database environment variables are missing!")
       hikariConfig.setJdbcUrl(dbUrl)
       hikariConfig.setUsername(dbUsername)
+<<<<<<< HEAD
       hikariConfig.setPassword(dbPassword)
+=======
+      hikariConfig.setPassword(dbPassword) // 🔐 Izmeni po potrebi
+>>>>>>> 5b997bc28e9eae90ccd8ac621149bafaa1f732f4
       hikariConfig.setDriverClassName("org.postgresql.Driver")
       hikariConfig.setMaximumPoolSize(10)
       hikariConfig.setMinimumIdle(2)
