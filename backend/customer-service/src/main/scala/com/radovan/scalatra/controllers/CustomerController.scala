@@ -3,28 +3,26 @@ package com.radovan.scalatra.controllers
 import com.radovan.scalatra.utils.TokenUtils._
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.radovan.scalatra.dto.CustomerDto
+import com.radovan.scalatra.metrics.MetricsSupport
 import com.radovan.scalatra.security.{CorsHandler, SecuritySupport}
-import com.radovan.scalatra.services.CustomerService
+import com.radovan.scalatra.services.{CustomerService, PrometheusService}
 import com.radovan.scalatra.utils.{RegistrationForm, ResponsePackage, ValidatorSupport}
 import flexjson.JSONDeserializer
 import jakarta.inject.Inject
 import org.apache.hc.core5.http.HttpStatus
 import org.scalatra.ScalatraServlet
 
-class CustomerController extends ScalatraServlet
+class CustomerController @Inject()(
+                                    val objectMapper: ObjectMapper,
+                                    val customerService: CustomerService,
+                                    val prometheusService: PrometheusService
+                                  ) extends ScalatraServlet
   with ValidatorSupport
   with CorsHandler
   with SecuritySupport
-  with ErrorsController {
+  with ErrorsController
+  with MetricsSupport {
 
-  private var customerService: CustomerService = _
-  private var objectMapper: ObjectMapper = _
-
-  @Inject
-  private def initialize(customerService: CustomerService, objectMapper: ObjectMapper): Unit = {
-    this.customerService = customerService
-    this.objectMapper = objectMapper
-  }
 
   get("/") {
     secured(Set("ROLE_ADMIN")) {

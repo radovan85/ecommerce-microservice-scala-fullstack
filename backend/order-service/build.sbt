@@ -36,7 +36,9 @@ libraryDependencies ++= Seq(
   "io.jsonwebtoken" % "jjwt-jackson" % "0.12.5" % "runtime",
   "com.auth0" % "java-jwt" % "4.4.0",
   "com.github.ben-manes.caffeine" % "caffeine" % "3.2.0",
-  "org.apache.httpcomponents.client5" % "httpclient5" % "5.4.4"
+  "org.apache.httpcomponents.client5" % "httpclient5" % "5.4.4",
+  "io.micrometer" % "micrometer-registry-prometheus" % "1.14.10"
+
 )
 
 

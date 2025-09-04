@@ -28,9 +28,8 @@ class RoleServiceImpl extends RoleService {
   @Transactional(readOnly = true)
   override def listAllByUserId(userId: Integer): Array[RoleDto] = {
     userService.getUserById(userId)
-    val allRoles = roleRepository.findAllByUserId(userId).asScala
-    allRoles.collect{
+    roleRepository.findAllByUserId(userId).collect{
       case roleEntity => tempConverter.roleEntityToDto(roleEntity)
-    }.toArray
+    }
   }
 }

@@ -12,7 +12,6 @@ import org.springframework.security.core.{Authentication, AuthenticationExceptio
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 import scala.collection.mutable.ArrayBuffer
 import scala.jdk.CollectionConverters._
@@ -37,41 +36,45 @@ class UserServiceImpl extends UserService {
     this.authenticationManager = authenticationManager
   }
 
-  @Transactional(readOnly = true)
+
   override def listAll: Array[UserDto] = {
-    val allUsers = userRepository.findAll().asScala
-    allUsers.collect {
+    userRepository.findAll.collect {
       case userEntity => tempConverter.userEntityToDto(userEntity)
-    }.toArray
+    }
   }
 
-  @Transactional(readOnly = true)
+
   override def getCurrentUser: UserDto = {
     val authentication = SecurityContextHolder.getContext.getAuthentication
     if (authentication.isAuthenticated) {
       val currentUsername = authentication.getName
-      userRepository.findByEmail(currentUsername)
-        .map(tempConverter.userEntityToDto)
-        .getOrElse(throw new InstanceUndefinedException(new Error("Invalid user!")))
+      userRepository.findByEmail(currentUsername) match {
+        case Some(userEntity) => tempConverter.userEntityToDto(userEntity)
+        case None => throw new InstanceUndefinedException(new Error("Invalid user!"))
+      }
     } else {
       throw new InstanceUndefinedException(new Error("Invalid user!"))
     }
   }
 
-  @Transactional(readOnly = true)
-  override def getUserById(userId: Integer): UserDto =
-    userRepository.findById(userId).map[UserDto](tempConverter.userEntityToDto)
-      .orElseThrow(() => new InstanceUndefinedException(new Error("Invalid user!")))
-
-  @Transactional(readOnly = true)
-  override def getUserByEmail(email: String): UserDto = {
-    userRepository.findByEmail(email)
-      .map(tempConverter.userEntityToDto)
-      .fold(throw new InstanceUndefinedException(new Error("Invalid user!")))(identity)
+  override def getUserById(userId: Integer): UserDto = {
+    userRepository.findById(userId) match {
+      case Some(userEntity) => tempConverter.userEntityToDto(userEntity)
+      case None => throw new InstanceUndefinedException(new Error("Invalid user!"))
+    }
   }
 
 
-  @Transactional(readOnly = true)
+
+  override def getUserByEmail(email: String): UserDto = {
+    userRepository.findByEmail(email) match {
+      case Some(userEntity) => tempConverter.userEntityToDto(userEntity)
+      case None => throw new InstanceUndefinedException(new Error("Invalid user!"))
+    }
+  }
+
+
+
   override def authenticateUser(username: String, password: String): Option[Authentication] = {
     val authReq = new UsernamePasswordAuthenticationToken(username, password)
     val userOptional = userRepository.findByEmail(username)
@@ -85,7 +88,7 @@ class UserServiceImpl extends UserService {
     }
   }
 
-  @Transactional(readOnly = true)
+
   override def isAdmin(userId: Integer): Boolean = {
     val user = getUserById(userId)
     roleRepository.findByRole("ROLE_ADMIN") match {
@@ -98,17 +101,15 @@ class UserServiceImpl extends UserService {
   }
 
 
-  @Transactional
   override def suspendUser(userId: Integer): Unit = {
     val user = getUserById(userId)
     if (isAdmin(user.getId())) {
       throw new OperationNotAllowedException(new Error("This operation is not allowed! The user has Admin authority!"))
     }
     user.setEnabled(0.toShort)
-    userRepository.saveAndFlush(tempConverter.userDtoToEntity(user))
+    userRepository.save(tempConverter.userDtoToEntity(user))
   }
 
-  @Transactional
   override def reactivateUser(userId: Integer): Unit = {
     val user = getUserById(userId)
     if (isAdmin(user.getId())) {
@@ -117,11 +118,10 @@ class UserServiceImpl extends UserService {
       )
     }
     user.setEnabled(1.toShort)
-    userRepository.saveAndFlush(tempConverter.userDtoToEntity(user))
+    userRepository.save(tempConverter.userDtoToEntity(user))
   }
 
 
-  @Transactional
   override def addUser(user: UserDto): UserDto = {
     // Proveri da li korisnik već postoji prema email adresi
     userRepository.findByEmail(user.getEmail) match {
@@ -146,18 +146,15 @@ class UserServiceImpl extends UserService {
 
     val storedUser = userRepository.save(userEntity)
 
+
     // Dodavanje korisnika u listu korisnika uloge
-    val users = Option(roleEntity.getUsers).map(_.asScala).getOrElse(new ArrayBuffer[UserEntity]())
-    users += storedUser
-    roleEntity.setUsers(users.asJava)
-    roleRepository.saveAndFlush(roleEntity)
+    //val users = Option(roleEntity.getUsers).map(_.asScala).getOrElse(new ArrayBuffer[UserEntity]())
 
     // Vraća konvertovani UserDto
     tempConverter.userEntityToDto(storedUser)
   }
 
 
-  @Transactional
   override def deleteUser(userId: Integer): Unit = {
     getUserById(userId) // validacija da korisnik postoji
     if (isAdmin(userId)) {
@@ -166,6 +163,5 @@ class UserServiceImpl extends UserService {
       )
     }
     userRepository.deleteById(userId)
-    userRepository.flush()
   }
 }

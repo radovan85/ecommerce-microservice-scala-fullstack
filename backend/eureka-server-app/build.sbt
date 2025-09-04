@@ -10,7 +10,11 @@ lazy val root = (project in file("."))
 libraryDependencies ++= Seq(
   "org.springframework.boot" % "spring-boot-starter-web" % "3.4.7",
   "org.springframework.boot" % "spring-boot-devtools" % "3.4.7",
+  "org.springframework.boot" % "spring-boot-starter-actuator" % "3.4.7",
   "com.google.code.gson" % "gson" % "2.12.1",
   "org.springframework.cloud" % "spring-cloud-starter-netflix-eureka-server" % "4.2.2",
 
 )
+
+enablePlugins(JavaAppPackaging)
+

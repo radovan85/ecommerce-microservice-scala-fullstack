@@ -2,6 +2,7 @@ package com.radovan.play.repositories.impl
 
 import com.radovan.play.entity.CartItemEntity
 import com.radovan.play.repositories.CartItemRepository
+import com.radovan.play.services.PrometheusService
 import jakarta.inject.Inject
 import jakarta.persistence.criteria.{CriteriaBuilder, CriteriaQuery, Predicate, Root}
 import org.hibernate.{Session, SessionFactory}
@@ -10,14 +11,17 @@ import scala.jdk.CollectionConverters._
 
 class CartItemRepositoryImpl extends CartItemRepository {
 
-  private var sessionFactory: SessionFactory = _
+  private var sessionFactory:SessionFactory = _
+  private var prometheusService:PrometheusService = _
 
   @Inject
-  private def initialize(sessionFactory: SessionFactory): Unit = {
+  private def initialize(sessionFactory: SessionFactory,prometheusService: PrometheusService):Unit = {
     this.sessionFactory = sessionFactory
+    this.prometheusService = prometheusService
   }
 
   private def withSession[T](block: Session => T): T = {
+    prometheusService.updateDatabaseQueryCount()
     val session = sessionFactory.openSession()
     val transaction = session.beginTransaction()
 

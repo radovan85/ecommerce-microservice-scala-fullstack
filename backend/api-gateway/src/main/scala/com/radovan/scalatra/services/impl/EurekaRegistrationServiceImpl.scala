@@ -44,7 +44,7 @@ class EurekaRegistrationServiceImpl @Inject() (
       instanceData.put("hostName", hostname)
       instanceData.put("ipAddr", ipAddr)
       instanceData.put("statusPageUrl", s"http://$ipAddr:$port/info")
-      instanceData.put("healthCheckUrl", s"http://$ipAddr:$port/health")
+      instanceData.put("healthCheckUrl", s"http://$ipAddr:$port/api/health")
       instanceData.put("homePageUrl", s"http://$ipAddr:$port/")
       instanceData.put("vipAddress", "api-gateway")
       instanceData.put("secureVipAddress", "api-gateway")

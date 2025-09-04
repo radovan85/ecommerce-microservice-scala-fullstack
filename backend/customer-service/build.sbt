@@ -3,6 +3,8 @@ val ScalatraVersion = "3.1.1"
 ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / organization := "com.radovan.scalatra"
 
+enablePlugins(SbtTwirl, SbtWar, RevolverPlugin, JavaAppPackaging)
+
 lazy val hello = (project in file("."))
   .settings(
     name := "customer-service",
@@ -44,7 +46,8 @@ lazy val hello = (project in file("."))
       "io.jsonwebtoken" % "jjwt-impl" % "0.12.5" % "runtime",
       "io.jsonwebtoken" % "jjwt-jackson" % "0.12.5" % "runtime",
       "com.auth0" % "java-jwt" % "4.4.0",
-      "com.github.ben-manes.caffeine" % "caffeine" % "3.2.0"
+      "com.github.ben-manes.caffeine" % "caffeine" % "3.2.0",
+      "io.micrometer" % "micrometer-registry-prometheus" % "1.14.10"
 
     ),
 

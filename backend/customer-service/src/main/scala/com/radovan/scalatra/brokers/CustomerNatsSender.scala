@@ -23,7 +23,7 @@ class CustomerNatsSender @Inject() (
     try {
       val payloadBytes = objectMapper.writeValueAsBytes(userPayload)
       val reply = natsUtils.getConnection
-        .request("user.create", payloadBytes, Duration.ofSeconds(2))
+        .request("user.create", payloadBytes, Duration.ofSeconds(5))
 
       val response = objectMapper.readTree(reply.getData)
       val status = if (response.has("status")) response.get("status").asInt() else 500

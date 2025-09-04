@@ -1,6 +1,5 @@
 package com.radovan.spring.controllers
 
-import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.{HttpStatus, ResponseEntity}
 import org.springframework.web.bind.annotation.{GetMapping, RequestMapping, RestController}
 

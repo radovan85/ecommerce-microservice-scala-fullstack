@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
@@ -23,15 +22,13 @@ class SecurityConfiguration {
   private var jwtRequestFilter: JwtRequestFilter = _
   private var jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint = _
   private var corsHandler: CorsHandler = _
-  private var userDetails: UserDetailsImpl = _
 
   @Autowired
   private def initialize(jwtRequestFilter: JwtRequestFilter,jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
-                         corsHandler: CorsHandler,userDetails:UserDetailsImpl):Unit = {
+                         corsHandler: CorsHandler):Unit = {
     this.jwtRequestFilter = jwtRequestFilter
     this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint
     this.corsHandler = corsHandler
-    this.userDetails = userDetails
   }
 
   @Bean
@@ -44,8 +41,8 @@ class SecurityConfiguration {
       .exceptionHandling(exception => exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
       .authorizeHttpRequests(authorize =>
         authorize
-          .requestMatchers("/api/auth/login", "api/auth/register", "/api/health").anonymous()
-          .requestMatchers("/api/auth/public-key").permitAll()
+          .requestMatchers("/api/auth/login", "api/auth/register").anonymous()
+          .requestMatchers("/api/auth/public-key","/api/health","/prometheus").permitAll()
           .anyRequest().authenticated()
       )
       .addFilterBefore(jwtRequestFilter, classOf[UsernamePasswordAuthenticationFilter])
@@ -55,24 +52,17 @@ class SecurityConfiguration {
   @Bean
   def authenticationManager(): AuthenticationManager = {
     val authProvider = new DaoAuthenticationProvider()
-    authProvider.setUserDetailsService(userDetails)
-    authProvider.setPasswordEncoder(passwordEncoder())
+    authProvider.setUserDetailsService(userDetailsService)
+    authProvider.setPasswordEncoder(passwordEncoder)
     new ProviderManager(authProvider)
   }
 
-/*
-  @Bean
-  def userDetailsService(): UserDetailsService = {
-    new UserDetailsImpl()
-  }
+  @Bean def userDetailsService = new UserDetailsImpl
 
- */
+  @Bean def passwordEncoder = new BCryptPasswordEncoder
 
 
 
-  @Bean
-  def passwordEncoder(): BCryptPasswordEncoder = {
-    new BCryptPasswordEncoder()
-  }
+
 }
 

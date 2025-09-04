@@ -1,15 +1,18 @@
 package com.radovan.scalatra.controllers
 
 import com.radovan.scalatra.config.CorsHandler
-import com.radovan.scalatra.services.ApiGatewayService
+import com.radovan.scalatra.metrics.MetricsSupport
+import com.radovan.scalatra.services.{ApiGatewayService, PrometheusService}
 import com.radovan.scalatra.utils.ResponsePackage
 import jakarta.servlet.http.HttpServletRequest
 import org.apache.pekko.http.scaladsl.model.StatusCodes.{BadRequest, NoContent, NotFound}
 import org.scalatra.ScalatraServlet
 
 
-class ApiGatewayController(apiGatewayService: ApiGatewayService)
-  extends ScalatraServlet with CorsHandler {
+class ApiGatewayController(
+                            val apiGatewayService: ApiGatewayService,
+                            val prometheusService: PrometheusService)
+  extends ScalatraServlet with CorsHandler with MetricsSupport {
 
   get("/*") {
     handleRequest(request)
@@ -32,7 +35,6 @@ class ApiGatewayController(apiGatewayService: ApiGatewayService)
   }
 
 
-
   private def handleRequest(request: HttpServletRequest): Any = {
     val path = request.getRequestURI.stripPrefix("/api/")
     val firstSegmentOpt = path.split("/").headOption
@@ -43,6 +45,7 @@ class ApiGatewayController(apiGatewayService: ApiGatewayService)
           case Some(serviceName) =>
             try {
               val responsePackage: ResponsePackage[String] = apiGatewayService.forwardRequest(serviceName, request)
+              //responsePackage.toResponse(response)
               status = responsePackage.statusCode
               contentType = "application/json"
               responsePackage.body
@@ -67,13 +70,13 @@ class ApiGatewayController(apiGatewayService: ApiGatewayService)
 
   private def mapSegmentToService(segment: String): Option[String] = {
     val serviceMappings = Map(
-      "products"   -> "product-service",
+      "products" -> "product-service",
       "categories" -> "product-service",
-      "auth"       -> "auth-service",
-      "cart"       -> "cart-service",
-      "order"      -> "order-service",
-      "customers"  -> "customer-service",
-      "addresses"  -> "customer-service"
+      "auth" -> "auth-service",
+      "cart" -> "cart-service",
+      "order" -> "order-service",
+      "customers" -> "customer-service",
+      "addresses" -> "customer-service"
     )
     serviceMappings.get(segment)
   }

@@ -18,7 +18,6 @@ class RoleEntity extends GrantedAuthority with Serializable{
   @Column(unique = true, nullable = false, length = 30)
   @BeanProperty var role: String = _
 
-  @Transient
   @ManyToMany(mappedBy = "roles")
   @BeanProperty var users: util.List[UserEntity] = _
 

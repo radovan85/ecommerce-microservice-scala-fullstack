@@ -21,8 +21,10 @@ class TempConverter {
     val returnValue = mapper.map(role, classOf[RoleDto])
     val usersOpt = Option(role.getUsers.asScala)
     val usersIds = new ArrayBuffer[Integer]()
-    if (usersOpt.isDefined) {
-      usersOpt.get.foreach(userEntity => usersIds += userEntity.getId)
+    usersOpt match {
+      case Some(users) =>
+        users.foreach(userEntity => usersIds += userEntity.getId())
+      case None =>
     }
 
     returnValue.setUsersIds(usersIds.toArray)
@@ -36,9 +38,9 @@ class TempConverter {
     usersIdsOpt match {
       case Some(usersIds) =>
         usersIds.foreach(userId => {
-          val userEntity = userRepository.findById(userId).orElse(null)
-          if (userEntity != null) {
-            users += userEntity
+          userRepository.findById(userId) match {
+            case Some(userEntity) => users += userEntity
+            case None =>
           }
         })
       case None =>
@@ -52,8 +54,9 @@ class TempConverter {
     val returnValue = mapper.map(user, classOf[UserDto])
     val rolesOpt = Option(user.getRoles.asScala)
     val rolesIds = new ArrayBuffer[Integer]()
-    if (rolesOpt.isDefined) {
-      rolesOpt.get.foreach(role => rolesIds += role.getId)
+    rolesOpt match {
+      case Some(roles) => roles.foreach(roleEntity => rolesIds += roleEntity.getId())
+      case None =>
     }
 
     val enabledOpt = Option(user.getEnabled)
@@ -73,9 +76,9 @@ class TempConverter {
     rolesIdsOpt match {
       case Some(rolesIds) =>
         rolesIds.foreach(roleId => {
-          val roleEntity = roleRepository.findById(roleId).orElse(null)
-          if (roleEntity != null) {
-            roles += roleEntity
+          roleRepository.findById(roleId) match {
+            case Some(roleEntity) => roles += roleEntity
+            case None =>
           }
         })
       case None =>

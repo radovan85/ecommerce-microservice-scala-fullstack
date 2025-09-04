@@ -52,6 +52,7 @@ class UserMessageListener {
     dispatcher.subscribe("user.create")
     dispatcher.subscribe("user.suspend.*")
     dispatcher.subscribe("user.reactivate.*")
+    dispatcher.subscribe("user.getById.*")
   }
 
   private def handleMessage(msg: Message): Unit = {
@@ -59,6 +60,7 @@ class UserMessageListener {
       msg.getSubject match {
         case "user.get"       => handleUserGet(msg)
         case "user.create"    => handleUserCreate(msg)
+        case subject if subject.startsWith("user.getById.") => handleUserGetById(msg)
         case subject if subject.startsWith("user.delete.")    => handleUserDelete(msg)
         case subject if subject.startsWith("user.suspend.")   => handleUserSuspend(msg)
         case subject if subject.startsWith("user.reactivate.")=> handleUserReactivate(msg)
@@ -92,7 +94,7 @@ class UserMessageListener {
       val createdUser: UserDto = userService.addUser(userDto)
 
       val response: ObjectNode = objectMapper.createObjectNode()
-      response.put("id", createdUser.getId)
+      response.put("id", createdUser.getId())
       response.put("status", HttpStatus.OK.value())
 
       val replyTo = msg.getReplyTo
@@ -136,6 +138,28 @@ class UserMessageListener {
         sendErrorResponse(msg, "Error processing operation", HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+
+  private def handleUserGetById(msg: Message): Unit = {
+    try {
+      val userId: Int = msg.getSubject.replace("user.getById.", "").toInt
+      val userOpt: Option[UserDto] = Option(userService.getUserById(userId))
+
+      userOpt match {
+        case Some(user) =>
+          if (user.getEnabled == 0) {
+            sendErrorResponse(msg, "Account suspended", HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS)
+          } else {
+            natsUtils.getConnection.publish(msg.getReplyTo, objectMapper.writeValueAsBytes(user))
+          }
+        case None =>
+          sendErrorResponse(msg, s"User ID $userId not found", HttpStatus.NOT_FOUND)
+      }
+    } catch {
+      case NonFatal(_) =>
+        sendErrorResponse(msg, "Error fetching user by ID", HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
 
   private def authenticateUser(token: String): Unit = {
     val userId = jwtUtil.extractUsername(token)

@@ -2,6 +2,7 @@ package com.radovan.scalatra.repositories.impl
 
 import com.radovan.scalatra.entity.CustomerEntity
 import com.radovan.scalatra.repositories.CustomerRepository
+import com.radovan.scalatra.services.PrometheusService
 import jakarta.inject.{Inject, Singleton}
 import jakarta.persistence.criteria.{CriteriaBuilder, CriteriaQuery, Predicate, Root}
 import org.hibernate.{Session, SessionFactory}
@@ -12,13 +13,16 @@ import scala.jdk.CollectionConverters._
 class CustomerRepositoryImpl extends CustomerRepository {
 
   private var sessionFactory:SessionFactory = _
+  private var prometheusService:PrometheusService = _
 
   @Inject
-  private def initialize(sessionFactory: SessionFactory):Unit = {
+  private def initialize(sessionFactory: SessionFactory,prometheusService: PrometheusService):Unit = {
     this.sessionFactory = sessionFactory
+    this.prometheusService = prometheusService
   }
 
   private def withSession[T](block: Session => T): T = {
+    prometheusService.updateDatabaseQueryCount()
     val session = sessionFactory.openSession()
     val transaction = session.beginTransaction()
 

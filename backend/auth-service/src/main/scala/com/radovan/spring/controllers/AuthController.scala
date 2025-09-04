@@ -1,7 +1,7 @@
 package com.radovan.spring.controllers
 
 import com.radovan.spring.converter.TempConverter
-import com.radovan.spring.dto.{RoleDto, UserDto}
+import com.radovan.spring.dto.UserDto
 import com.radovan.spring.entity.UserEntity
 import com.radovan.spring.services.{RoleService, UserService}
 import com.radovan.spring.utils.{AuthenticationRequest, JwtUtil}
@@ -36,12 +36,12 @@ class AuthController {
 
   @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   @GetMapping(Array("/users"))
-  def getAllUsers(): ResponseEntity[Array[UserDto]] = {
+  def getAllUsers: ResponseEntity[Array[UserDto]] = {
     new ResponseEntity(userService.listAll, HttpStatus.OK)
   }
 
   @GetMapping(Array("/me"))
-  def getMyData(): ResponseEntity[UserDto] = {
+  def getMyData: ResponseEntity[UserDto] = {
     new ResponseEntity(userService.getCurrentUser, HttpStatus.OK)
   }
 
@@ -70,7 +70,7 @@ class AuthController {
   }
 
   @GetMapping(Array("/public-key"))
-  def getPublicKey(): ResponseEntity[String] = {
+  def getPublicKey: ResponseEntity[String] = {
     new ResponseEntity(jwtUtil.getPublicKeyAsPEM, HttpStatus.OK)
   }
 }

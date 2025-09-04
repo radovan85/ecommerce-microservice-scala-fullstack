@@ -56,4 +56,3 @@ class HibernateUtil {
 
   def getSessionFactory: SessionFactory = sessionFactory
 }
-

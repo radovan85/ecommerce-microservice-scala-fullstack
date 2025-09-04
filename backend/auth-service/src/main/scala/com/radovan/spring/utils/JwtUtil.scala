@@ -15,6 +15,7 @@ import scala.jdk.CollectionConverters._
 import scala.util.{Failure, Success, Try}
 
 @Component
+@PropertySource(Array("classpath:application.properties"))
 class JwtUtil @Autowired()(private val environment: Environment) {
 
   private val logger: Logger = LoggerFactory.getLogger(classOf[JwtUtil])

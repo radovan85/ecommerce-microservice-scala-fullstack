@@ -62,7 +62,7 @@ class LoadData {
           users.add(storedAdmin)
           val roleAdmin: RoleEntity = roleOpt
           roleAdmin.setUsers(users)
-          roleRepository.saveAndFlush(roleAdmin)
+          roleRepository.save(roleAdmin)
       }
     }
   }

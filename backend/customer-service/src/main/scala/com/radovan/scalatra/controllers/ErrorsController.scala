@@ -25,6 +25,6 @@ trait ErrorsController extends ScalatraBase {
 
 
     case e: Exception =>
-      new ResponsePackage[String]("Unexpected server error occurred.", HttpStatus.SC_INTERNAL_SERVER_ERROR).toResponse(response)
+      new ResponsePackage[String](s"Unexpected server error occurred:   ${e.getMessage}", HttpStatus.SC_INTERNAL_SERVER_ERROR).toResponse(response)
   }
 }

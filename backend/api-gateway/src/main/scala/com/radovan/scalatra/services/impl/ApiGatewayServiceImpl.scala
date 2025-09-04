@@ -3,7 +3,7 @@ package com.radovan.scalatra.services.impl
 import com.radovan.scalatra.services.ApiGatewayService
 import com.radovan.scalatra.utils.ResponsePackage
 import com.radovan.scalatra.utils.ServiceUrlProvider
-import jakarta.inject.Inject
+import jakarta.inject.{Inject, Singleton}
 import jakarta.servlet.http.HttpServletRequest
 import org.apache.hc.client5.http.classic.methods._
 import org.apache.hc.client5.http.impl.classic.HttpClients
@@ -14,7 +14,8 @@ import org.apache.hc.core5.http.io.HttpClientResponseHandler
 import scala.jdk.CollectionConverters._
 import java.io.IOException
 
-class ApiGatewayServiceImpl @Inject() () extends ApiGatewayService {
+@Singleton
+class ApiGatewayServiceImpl extends ApiGatewayService {
 
   private val cachedServiceUrls = scala.collection.concurrent.TrieMap.empty[String, String]
 
