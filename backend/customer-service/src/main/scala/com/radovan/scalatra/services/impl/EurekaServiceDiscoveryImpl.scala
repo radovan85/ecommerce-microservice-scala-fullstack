@@ -8,6 +8,7 @@ import org.apache.hc.client5.http.impl.classic.HttpClients
 import org.apache.hc.core5.http.ClassicHttpResponse
 import org.apache.hc.core5.http.io.HttpClientResponseHandler
 
+import java.nio.file.{Files, Paths}
 import java.util
 
 class EurekaServiceDiscoveryImpl @Inject() () extends EurekaServiceDiscovery {
@@ -15,10 +16,19 @@ class EurekaServiceDiscoveryImpl @Inject() () extends EurekaServiceDiscovery {
   private val client = HttpClients.createDefault()
 
   private val EUREKA_API_SERVICES_URL = "http://eureka-server:8761/eureka/apps"
+  private val K8S_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token"
 
   override def getServiceUrl(serviceName: String): String = {
-    val url = s"$EUREKA_API_SERVICES_URL/$serviceName"
+    val runningInK8s = sys.env.contains("KUBERNETES_SERVICE_HOST") && Files.exists(Paths.get(K8S_TOKEN_PATH))
 
+    if (runningInK8s) {
+      // Idiomatski K8s pristup: koristi DNS ime servisa i port iz env varijable
+      val port = sys.env.getOrElse(s"${serviceName.toUpperCase}_SERVICE_PORT", "80").toInt
+      return s"http://$serviceName:$port"
+    }
+
+    // Fallback na Eureka (Docker Compose)
+    val url = s"$EUREKA_API_SERVICES_URL/$serviceName"
     val request = new HttpGet(url)
     request.addHeader("Accept", "application/json")
 
@@ -35,7 +45,6 @@ class EurekaServiceDiscoveryImpl @Inject() () extends EurekaServiceDiscovery {
               ""
           }
         } else ""
-
 
         if (statusCode >= 200 && statusCode < 300) {
           if (body == null || body.trim.isEmpty) {
