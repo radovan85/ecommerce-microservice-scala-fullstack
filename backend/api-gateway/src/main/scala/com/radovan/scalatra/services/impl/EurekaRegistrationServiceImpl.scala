@@ -22,7 +22,6 @@ class EurekaRegistrationServiceImpl @Inject() (
   implicit val ec: ExecutionContext = system.dispatcher
 
   private val eurekaServerUrl = sys.env.getOrElse("EUREKA_SERVER_URL", "http://eureka-server:8761/eureka/apps")
-  println(s"Eureka server url:  ${eurekaServerUrl}")
   private val appName = "api-gateway"
   private val port = 8080
 
@@ -32,7 +31,7 @@ class EurekaRegistrationServiceImpl @Inject() (
   )(() => registerService())
 
   override def registerService(): Unit = {
-
+    println(s"Eureka server url:  ${eurekaServerUrl}")
     try {
       val hostname = InetAddress.getLocalHost.getHostName
       val ipAddr = InetAddress.getLocalHost.getHostAddress
