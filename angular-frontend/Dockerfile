@@ -10,7 +10,7 @@ RUN npx ng build ecommerce-frontend --configuration production
 # Stage 2: Serve with NGINX
 FROM nginx:alpine
 
-COPY --from=builder /app/dist/angular-ecommerce /usr/share/nginx/html
+COPY --from=builder /app/dist/ecommerce-frontend /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
