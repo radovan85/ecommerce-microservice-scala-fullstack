@@ -12,4 +12,4 @@ RUN mv /app/api-gateway-0.1.0-SNAPSHOT /app/api-gateway
 
 RUN chmod +x /app/api-gateway/bin/api-gateway
 
-CMD ["/bin/bash", "-c", "/app/api-gateway/bin/api-gateway"]
+CMD ["/bin/bash", "-c", "exec /app/api-gateway/bin/api-gateway"]
