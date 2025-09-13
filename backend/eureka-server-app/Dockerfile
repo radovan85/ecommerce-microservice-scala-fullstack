@@ -15,4 +15,4 @@ RUN chmod +x /app/eureka-server-app/bin/eureka-server-app
 
 EXPOSE 8761
 
-CMD ["/bin/bash", "-c", "/app/eureka-server-app/bin/eureka-server-app"]
+CMD ["/bin/bash", "-c", "exec /app/eureka-server-app/bin/eureka-server-app"]
