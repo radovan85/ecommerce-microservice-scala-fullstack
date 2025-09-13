@@ -7,7 +7,7 @@ import jakarta.inject.Singleton
 class NatsUtils {
 
   private val nc: Connection = try {
-    val conn = Nats.connect("nats://nats:4222")
+    val conn = Nats.connect("nats://localhost:4222")
     println("*** NATS connection has been established!")
     conn
   } catch {

@@ -14,7 +14,7 @@ class EurekaServiceDiscoveryImpl @Inject() () extends EurekaServiceDiscovery {
 
   private val client = HttpClients.createDefault()
 
-  private val EUREKA_API_SERVICES_URL = "http://eureka-server:8761/eureka/apps"
+  private val EUREKA_API_SERVICES_URL = "http://localhost:8761/eureka/apps"
 
   override def getServiceUrl(serviceName: String): String = {
     val url = s"$EUREKA_API_SERVICES_URL/$serviceName"
