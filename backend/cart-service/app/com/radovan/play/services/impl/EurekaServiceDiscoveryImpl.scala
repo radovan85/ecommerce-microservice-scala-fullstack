@@ -12,7 +12,7 @@ class EurekaServiceDiscoveryImpl @Inject() (
                                              wsClient: WSClient
                                            ) extends EurekaServiceDiscovery {
 
-  private val EUREKA_API_SERVICES_URL = "http://eureka-server:8761/eureka/apps"
+  private val EUREKA_API_SERVICES_URL = "http://localhost:8761/eureka/apps"
   private val objectMapper = new ObjectMapper()
 
   override def getServiceUrl(serviceName: String): String = {

@@ -7,6 +7,8 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.13.16"
 
+PlayKeys.devSettings := Seq("play.server.http.port" -> "9001")
+
 libraryDependencies ++= Seq(
   guice,
   jdbc,
