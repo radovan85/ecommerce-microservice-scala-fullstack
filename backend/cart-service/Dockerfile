@@ -11,6 +11,7 @@ RUN unzip /app/cart-service.zip && rm /app/cart-service.zip
 ENV DB_URL=${DB_URL}
 ENV DB_USERNAME=${DB_USERNAME}
 ENV DB_PASSWORD=${DB_PASSWORD}
+ENV PLAY_PORT=${PLAY_PORT}
 
 RUN mv /app/cart-service-1.0-SNAPSHOT /app/cart-service
 
