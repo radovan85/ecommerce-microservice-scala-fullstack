@@ -20,10 +20,10 @@ class EurekaRegistrationServiceImpl @Inject() (
                                                 executionContext: ExecutionContext
                                               ) extends EurekaRegistrationService {
 
-  private val EUREKA_SERVER_URL = "http://eureka-server:8761/eureka/apps"
+  private val EUREKA_SERVER_URL = "http://localhost:8761/eureka/apps"
   private val appName = "product-service"
   private val instanceId = s"$appName-01"
-  private val port = 9000
+  private val port = System.getenv("PLAY_PORT").toInt
 
   // 🕒 Periodično zakazivanje registracije
   actorSystem.scheduler.scheduleAtFixedRate(
