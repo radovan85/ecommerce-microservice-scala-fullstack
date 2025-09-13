@@ -70,7 +70,7 @@ jobs:
         run: |
           cd angular-frontend
           npm install
-          npm run build
+          npm run build --configuration production
           cd ..
 
       - name: Build and Push Docker Images
@@ -84,7 +84,7 @@ jobs:
           docker build -t $IMAGE_PREFIX/ecommerce-scl/cart-service:main ./backend/cart-service
           docker build -t $IMAGE_PREFIX/ecommerce-scl/product-service:main ./backend/product-service
           docker build -t $IMAGE_PREFIX/ecommerce-scl/order-service:main ./backend/order-service
-          docker build -t $IMAGE_PREFIX/ecommerce-scl/angular-ecommerce:main ./angular-frontend
+          docker build -t $IMAGE_PREFIX/ecommerce-scl/angular-ecommerce:main -f angular-frontend/Dockerfile.nginx ./angular-frontend
 
           docker push $IMAGE_PREFIX/ecommerce-scl/eureka-server:main
           docker push $IMAGE_PREFIX/ecommerce-scl/api-gateway:main
