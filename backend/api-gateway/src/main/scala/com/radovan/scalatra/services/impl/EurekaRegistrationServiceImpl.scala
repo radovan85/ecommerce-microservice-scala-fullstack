@@ -31,7 +31,7 @@ class EurekaRegistrationServiceImpl @Inject() (
   )(() => registerService())
 
   override def registerService(): Unit = {
-    println(s"Eureka server url:  ${eurekaServerUrl}")
+
     try {
       val hostname = InetAddress.getLocalHost.getHostName
       val ipAddr = InetAddress.getLocalHost.getHostAddress
