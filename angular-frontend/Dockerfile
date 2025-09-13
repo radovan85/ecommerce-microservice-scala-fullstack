@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npx ng build --configuration production
+RUN npx ng build ecommerce-frontend --configuration production
 
 # Stage 2: Serve with NGINX
 FROM nginx:alpine
