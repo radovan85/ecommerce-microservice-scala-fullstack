@@ -1,12 +1,11 @@
-FROM node:22
+FROM nginx:alpine
 
-WORKDIR /app
+# Angular build output
+COPY dist/angular-ecommerce /usr/share/nginx/html
 
-COPY package*.json ./
-RUN npm install
+# Custom NGINX config
+COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY . .
+EXPOSE 80
 
-EXPOSE 4200
-
-CMD ["npx", "ng", "serve", "--host", "0.0.0.0"]
+CMD ["nginx", "-g", "daemon off;"]
