@@ -21,7 +21,7 @@ class EurekaRegistrationServiceImpl @Inject() (
 
   implicit val ec: ExecutionContext = system.dispatcher
 
-  private val eurekaServerUrl = "http://eureka-server:8761/eureka/apps"
+  private val eurekaServerUrl = "http://localhost:8761/eureka/apps"
   private val appName = "api-gateway"
   private val port = 8080
 
