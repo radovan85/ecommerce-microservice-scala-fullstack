@@ -6,9 +6,8 @@ COPY target/auth-service.war /app/app.war
 
 RUN mv /app/app.war /usr/local/tomcat/webapps/ROOT.war
 
-# Usklađene ENV varijable
-ENV DB_URL=jdbc:postgresql://postgres:5432/ecommerce-db
-ENV DB_USERNAME=postgres
-ENV DB_PASSWORD=1111
+ENV DB_URL=${DB_URL}
+ENV DB_USERNAME=${DB_USERNAME}
+ENV DB_PASSWORD=${DB_PASSWORD}
 
 CMD ["catalina.sh", "run"]

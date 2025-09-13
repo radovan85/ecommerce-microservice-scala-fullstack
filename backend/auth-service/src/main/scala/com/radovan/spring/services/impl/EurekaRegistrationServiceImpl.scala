@@ -15,7 +15,7 @@ import scala.jdk.CollectionConverters._
 @Service
 class EurekaRegistrationServiceImpl  extends EurekaRegistrationService {
 
-  private val EUREKA_SERVER_URL = "http://eureka-server:8761/eureka/apps"
+  private val EUREKA_SERVER_URL = "http://localhost:8761/eureka/apps"
   @Autowired
   private var restTemplate:RestTemplate = _
 
@@ -30,7 +30,7 @@ class EurekaRegistrationServiceImpl  extends EurekaRegistrationService {
 
       val appName = "auth-service"
       val instanceId = appName + "-01"
-      val port = 8080
+      val port = 8081
 
       // Kreiranje podataka za registraciju koristeći java.util.Map
       val instanceData = new mutable.HashMap[String,Any]()

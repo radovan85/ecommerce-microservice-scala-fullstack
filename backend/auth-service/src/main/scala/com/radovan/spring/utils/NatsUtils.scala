@@ -12,7 +12,7 @@ class NatsUtils {
   @PostConstruct
   def init(): Unit = {
     try {
-      this.nc = Nats.connect("nats://nats:4222")
+      this.nc = Nats.connect("nats://localhost:4222")
       println("*** NATS connection has been established!")
     } catch {
       case e: Exception =>
