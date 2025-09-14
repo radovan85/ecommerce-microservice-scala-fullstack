@@ -70,7 +70,7 @@ jobs:
         run: |
           cd angular-frontend
           npm install
-          npx ng build --configuration production
+          npx @angular/cli build --configuration production
           cd ..
 
       - name: Build and Push Docker Images
