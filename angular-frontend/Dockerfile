@@ -22,5 +22,5 @@ COPY --from=builder /app/dist/ecommerce-frontend/browser /usr/share/nginx/html
 # Copy custom NGINX config
 COPY nginx.conf /etc/nginx/nginx.conf
 
-EXPOSE 8005
+EXPOSE 4200
 CMD ["nginx", "-g", "daemon off;"]
