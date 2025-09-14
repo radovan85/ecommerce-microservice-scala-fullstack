@@ -3,8 +3,6 @@ package com.radovan.spring.utils
 import io.jsonwebtoken.{Claims, Jwts}
 import org.slf4j.{Logger, LoggerFactory}
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.PropertySource
-import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
 
 import java.security.{KeyFactory, PrivateKey, PublicKey}
@@ -15,8 +13,7 @@ import scala.jdk.CollectionConverters._
 import scala.util.{Failure, Success, Try}
 
 @Component
-@PropertySource(Array("classpath:application.properties"))
-class JwtUtil @Autowired()(private val environment: Environment) {
+class JwtUtil  {
 
   private val logger: Logger = LoggerFactory.getLogger(classOf[JwtUtil])
 
