@@ -26,9 +26,9 @@ class JwtUtil @Autowired()(private val environment: Environment) {
 
   @Autowired
   def init(): Unit = {
-    val privateKeyString = Option(environment.getProperty("jwt.private-key"))
-    val publicKeyString  = Option(environment.getProperty("jwt.public-key"))
-    val expiration       = Option(environment.getProperty("jwt.expiration"))
+    val privateKeyString = Option(System.getenv("jwt.private-key"))
+    val publicKeyString  = Option(System.getenv("jwt.public-key"))
+    val expiration       = Option(System.getenv("jwt.expiration"))
 
     println(s"Private key:  $privateKey")
     println(s"Public key: $publicKey")
