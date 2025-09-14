@@ -9,13 +9,13 @@ RUN npm install
 
 # Copy source and build
 COPY . .
-RUN npx ng build --configuration production
+RUN npx ng build --configuration production --output-path=dist
 
 # Stage 2: Serve with NGINX
 FROM nginx:alpine
 
-# Copy Angular build output
-COPY --from=builder /app/dist/ecommerce-frontend /usr/share/nginx/html
+# Copy Angular build output directly from dist/
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Copy custom NGINX config
 COPY nginx.conf /etc/nginx/nginx.conf
