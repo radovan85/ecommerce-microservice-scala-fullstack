@@ -12,8 +12,11 @@ RUN npx ng build --configuration production
 # Stage 2: Serve with NGINX
 FROM nginx:alpine
 
-COPY --from=builder /app/dist/ecommerce-frontend /usr/share/nginx/html
+# Angular 17 outputs to browser folder
+COPY --from=builder /app/dist/ecommerce-frontend/browser /usr/share/nginx/html
+
 COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
+
