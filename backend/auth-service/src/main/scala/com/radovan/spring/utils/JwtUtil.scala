@@ -30,9 +30,6 @@ class JwtUtil @Autowired()(private val environment: Environment) {
     val publicKeyString  = Option(System.getenv("JWT_PUBLIC_KEY"))
     val expiration       = Option(System.getenv("JWT_EXPIRATION"))
 
-    println(s"Private key:  $privateKey")
-    println(s"Public key: $publicKey")
-
     if (privateKeyString.isEmpty || publicKeyString.isEmpty || expiration.isEmpty) {
       throw new IllegalStateException("JWT configuration missing in application.properties")
     }
