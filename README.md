@@ -59,6 +59,59 @@ nomad agent -config=./nomad-config/nomad.hcl
 
 This launches Nomad in server + client mode, with Consul integration and Docker driver enabled. The agent will be ready to accept job submissions.
 
+📊 Create Prometheus Configuration
+To enable observability, Prometheus must be configured to scrape metrics from all microservices. Run the following command to generate prometheus.yml inside the mounted volume:
+
+sudo tee /opt/nomad-volumes/prometheus/prometheus.yml > /dev/null <<'EOF'
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'api-gateway'
+    metrics_path: '/prometheus'
+    static_configs:
+      - targets: [ 'localhost:8080' ]
+
+  - job_name: 'api-gateway-all'
+    metrics_path: '/prometheus/metrics'
+    static_configs:
+      - targets: [ 'localhost:8080' ]
+
+  - job_name: 'auth-service'
+    metrics_path: '/prometheus'
+    static_configs:
+      - targets: [ 'localhost:8081' ]
+
+  - job_name: 'customer-service'
+    metrics_path: '/prometheus'
+    static_configs:
+      - targets: [ 'localhost:8083' ]
+
+  - job_name: 'cart-service'
+    metrics_path: '/prometheus'
+    static_configs:
+      - targets: [ 'localhost:9001' ]
+
+  - job_name: 'product-service'
+    metrics_path: '/prometheus'
+    static_configs:
+      - targets: [ 'localhost:9002' ]
+
+  - job_name: 'order-service'
+    metrics_path: '/prometheus'
+    static_configs:
+      - targets: [ 'localhost:9003' ]
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: [ 'localhost:9090' ]
+
+EOF
+
+🧠 Note: This configuration ensures Prometheus scrapes metrics from all services using their respective ports and custom endpoints.
+
+
 📦 Terraform Orchestration
 Navigate to the infrastructure folder to initialize and apply the orchestration:
 
@@ -83,3 +136,7 @@ Grafana at http://localhost:3000 (default login: admin/admin)
 Prometheus at http://localhost:9090
 
 Microservices via their respective ports (see prometheus.yml for targets)
+
+📬 Contact: philip_rivers85@yahoo.com
+
+I built this system to be modular, scalable, and pragmatic. If you value full control and real-world deployability, you're in the right repo.
