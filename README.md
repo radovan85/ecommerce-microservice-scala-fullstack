@@ -1,3 +1,30 @@
+🚀 Fullstack Scala Microservices E-commerce Platform
+A fully containerized, production-grade e-commerce platform built with idiomatic Scala microservices and a modular orchestration layer. Designed for observability, and rollback-friendly deployment — this project runs seamlessly on Linux or WSL (Ubuntu), and scales from local testing to cloud-ready infrastructure.
+
+Whether you're refining your Scala skills or exploring orchestration across frameworks, this platform is your playground for precision engineering.
+
+🧰 Tech Stack Overview
+
+
+Service	Framework	Port
+Eureka Server Spring Boot 8761
+API Gateway	Scalatra	8080
+Auth Service	Spring MVC	8081
+Customer Service	Scalatra	8083
+Cart Service	Play Framework	9001
+Product Service	Play Framework	9002
+Order Service	Play Framework	9003
+
+🎯 Project Goals
+Strengthen Scala proficiency across multiple frameworks
+
+Showcase orchestration with modular job definitions
+
+Enable full observability via Prometheus and Grafana
+
+Provide a clean, reproducible infrastructure for mentees and collaborators
+
+
 🚀 Project Setup & Execution
 This project is designed to run on Linux or WSL (Windows Subsystem for Linux). It has been tested and verified on WSL Ubuntu, and requires the following tools to be installed and running:
 
