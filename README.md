@@ -106,8 +106,8 @@ scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: [ 'localhost:9090' ]
-
 EOF
+
 
 🧠 Note: This configuration ensures Prometheus scrapes metrics from all services using their respective ports and custom endpoints.
 
