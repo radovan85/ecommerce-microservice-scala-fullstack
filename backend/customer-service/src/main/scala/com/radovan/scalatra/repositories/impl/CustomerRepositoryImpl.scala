@@ -76,7 +76,7 @@ class CustomerRepositoryImpl extends CustomerRepository {
 
   override def deleteById(customerId: Integer): Unit = {
     withSession { session =>
-      val customerEntity = session.get(classOf[CustomerEntity], customerId)
+      val customerEntity = session.find(classOf[CustomerEntity], customerId)
       if (customerEntity != null) session.remove(customerEntity)
     }
   }

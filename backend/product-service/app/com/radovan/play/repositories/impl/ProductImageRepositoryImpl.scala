@@ -79,7 +79,7 @@ class ProductImageRepositoryImpl extends ProductImageRepository{
 
   override def deleteById(imageId: Integer): Unit = {
     withSession { session =>
-      val imageEntity = session.get(classOf[ProductImageEntity], imageId)
+      val imageEntity = session.find(classOf[ProductImageEntity], imageId)
       if(imageEntity!=null) session.remove(imageEntity)
     }
   }

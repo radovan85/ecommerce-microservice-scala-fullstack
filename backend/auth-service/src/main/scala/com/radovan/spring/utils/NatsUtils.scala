@@ -1,10 +1,8 @@
 package com.radovan.spring.utils
 
-import org.springframework.stereotype.Component
 import io.nats.client.{Connection, Nats}
 import jakarta.annotation.{PostConstruct, PreDestroy}
 
-@Component
 class NatsUtils {
 
   private var nc: Connection = _
@@ -12,7 +10,7 @@ class NatsUtils {
   @PostConstruct
   def init(): Unit = {
     try {
-      this.nc = Nats.connect("nats://localhost:4222")
+      nc = Nats.connect("nats://localhost:4222")
       println("*** NATS connection has been established!")
     } catch {
       case e: Exception =>

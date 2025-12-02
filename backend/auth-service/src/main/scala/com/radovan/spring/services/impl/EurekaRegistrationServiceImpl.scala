@@ -1,12 +1,12 @@
 package com.radovan.spring.services.impl
 
-import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.radovan.spring.services.EurekaRegistrationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.{HttpEntity, HttpHeaders, MediaType}
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
+import tools.jackson.databind.{JsonNode, ObjectMapper}
 
 import java.net.InetAddress
 import scala.collection.mutable

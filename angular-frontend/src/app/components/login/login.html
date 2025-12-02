@@ -1,0 +1,31 @@
+<div class="grid-container login-container">
+  <div class="grid-x grid-padding-x align-center">
+    <div class="cell medium-6 large-4">
+      <div class="callout shadowed-form">
+        <h2 class="text-center">Login</h2>
+        <form id="loginForm">
+          <!-- Email -->
+          <label for="email">Email
+            <input type="email" id="email" name="email" required placeholder="Enter your email">
+          </label>
+
+          <!-- Password -->
+          <label for="password">Password
+            <input type="password" id="password" name="password" required placeholder="Enter your password">
+          </label>
+
+          <!-- Submit -->
+          <button type="submit" class="button expanded primary">Login</button>
+
+          <!-- Error message -->
+          <p id="error-message" class="form-error error-message">Invalid email or password.</p>
+
+          <!-- Register link -->
+          <div class="register-link text-center">
+            <a routerLink="/register">Create an account</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

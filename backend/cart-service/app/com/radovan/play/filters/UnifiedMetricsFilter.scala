@@ -11,21 +11,19 @@ class UnifiedMetricsFilter @Inject()(
                                     )(implicit ec: ExecutionContext) extends EssentialFilter {
 
   override def apply(next: EssentialAction): EssentialAction = EssentialAction { requestHeader =>
-    val startTimeNs = System.nanoTime()
+    // 🚫 Preskoči metrikovanje za Prometheus scrape i Health check
+    if (requestHeader.path == "/prometheus" || requestHeader.path == "/api/health") {
+      next(requestHeader)
+    } else {
+      val startTimeNs = System.nanoTime()
+      prometheus.increaseRequestCount()
 
-    // 📈 Broj zahteva odmah
-    prometheus.increaseRequestCount()
-
-    next(requestHeader).map { result =>
-      val durationSec = (System.nanoTime() - startTimeNs) / 1e9
-
-      // ⏱ Trajanje odgovora
-      prometheus.recordResponseTime(durationSec)
-
-      // 📊 Status klasifikacija (2xx, 4xx, 5xx)
-      prometheus.updateHttpStatusCount(result.header.status)
-
-      result
+      next(requestHeader).map { result =>
+        val durationSec = (System.nanoTime() - startTimeNs) / 1e9
+        prometheus.recordResponseTime(durationSec)
+        prometheus.updateHttpStatusCount(result.header.status)
+        result
+      }
     }
   }
 }

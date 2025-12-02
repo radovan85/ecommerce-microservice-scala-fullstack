@@ -63,4 +63,3 @@ export class OrderItem {
         this._orderId = value;
     }
 }
-

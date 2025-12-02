@@ -2,7 +2,7 @@ package com.radovan.scalatra.config
 
 import com.google.inject.{Guice, Injector}
 import com.radovan.scalatra.controllers.{CustomerController, HealthController, PrometheusController, ShippingAddressController}
-import com.radovan.scalatra.modules.{AutoBindModule, HibernateModule, MapperModule}
+import com.radovan.scalatra.modules.{AutoBindModule, InstanceModule}
 import com.radovan.scalatra.services.EurekaRegistrationService
 import org.eclipse.jetty.ee10.servlet.{ServletContextHandler, ServletHolder}
 import org.eclipse.jetty.server.Server
@@ -12,8 +12,7 @@ object JettyLauncher {
   def main(args: Array[String]): Unit = {
     // Kreiraj Guice injector sa više modula, uključujući HibernateModule
     val injector: Injector = Guice.createInjector(
-      new HibernateModule,    // Hibernate konfiguracija
-      new MapperModule,       // Mapper konfiguracija
+      new InstanceModule,
       new AutoBindModule      // Automatsko bindovanje servisa i kontrolera
     )
 

@@ -63,4 +63,3 @@ export class OrderAddress {
         this._orderId = value;
     }
 }
-

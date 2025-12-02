@@ -54,4 +54,3 @@ export class Order {
         this._createTime = value;
     }
 }
-

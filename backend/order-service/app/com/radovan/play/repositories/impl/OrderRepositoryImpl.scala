@@ -54,7 +54,7 @@ class OrderRepositoryImpl extends OrderRepository{
 
   override def deleteById(orderId: Integer): Unit = {
     withSession { session =>
-      val order = session.get(classOf[OrderEntity], orderId)
+      val order = session.find(classOf[OrderEntity], orderId)
       if (order != null) {
         session.remove(order)
       }

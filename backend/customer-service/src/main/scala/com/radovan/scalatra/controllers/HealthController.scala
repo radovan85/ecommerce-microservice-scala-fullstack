@@ -1,6 +1,5 @@
 package com.radovan.scalatra.controllers
 
-import com.radovan.scalatra.metrics.MetricsSupport
 import com.radovan.scalatra.security.CorsHandler
 import com.radovan.scalatra.services.PrometheusService
 import com.radovan.scalatra.utils.ResponsePackage
@@ -10,7 +9,7 @@ import org.scalatra.ScalatraServlet
 
 class HealthController @Inject()(
                                   val prometheusService: PrometheusService
-                                ) extends ScalatraServlet with CorsHandler with MetricsSupport {
+                                ) extends ScalatraServlet with CorsHandler  {
 
   get("/") {
     new ResponsePackage[String]("OK", HttpStatus.SC_OK)

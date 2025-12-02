@@ -7,7 +7,7 @@ import com.radovan.play.repositories.impl.{OrderAddressRepositoryImpl, OrderItem
 import com.radovan.play.repositories.{OrderAddressRepository, OrderItemRepository, OrderRepository}
 import com.radovan.play.services.impl.{EurekaRegistrationServiceImpl, EurekaServiceDiscoveryImpl, OrderAddressServiceImpl, OrderItemServiceImpl, OrderServiceImpl, PrometheusServiceImpl}
 import com.radovan.play.services.{EurekaRegistrationService, EurekaServiceDiscovery, OrderAddressService, OrderItemService, OrderService, PrometheusService}
-import com.radovan.play.utils.{JwtUtil, NatsUtils, PublicKeyCache, ServiceUrlProvider}
+import com.radovan.play.utils.{JwtUtil, PublicKeyCache, ServiceUrlProvider}
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.prometheusmetrics.{PrometheusConfig, PrometheusMeterRegistry}
 
@@ -26,7 +26,6 @@ class AutoBindModule extends AbstractModule {
     bind(classOf[OrderRepository]).to(classOf[OrderRepositoryImpl]).asEagerSingleton()
     bind(classOf[TempConverter]).asEagerSingleton()
     bind(classOf[JwtUtil]).asEagerSingleton()
-    bind(classOf[NatsUtils]).asEagerSingleton()
     bind(classOf[PublicKeyCache]).asEagerSingleton()
     bind(classOf[ServiceUrlProvider]).asEagerSingleton()
     bind(classOf[OrderNatsSender]).asEagerSingleton()

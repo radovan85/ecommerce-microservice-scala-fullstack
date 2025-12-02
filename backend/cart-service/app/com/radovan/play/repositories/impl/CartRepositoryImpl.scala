@@ -93,7 +93,7 @@ class CartRepositoryImpl extends CartRepository {
 
   override def deleteById(cartId: Integer): Unit = {
     withSession { session =>
-      val cartEntity = session.get(classOf[CartEntity], cartId)
+      val cartEntity = session.find(classOf[CartEntity], cartId)
       if (cartEntity != null) session.remove(cartEntity)
     }
   }
