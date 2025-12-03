@@ -1,0 +1,103 @@
+<div class="grid-container product-details-container">
+    <div class="grid-x align-center">
+        <div class="cell small-12 medium-10 large-8">
+            <h2 class="product-title text-center">Product Details</h2>
+            <div class="callout radius shadow-card">
+                <!-- Product Card Main Info -->
+                <div class="grid-x grid-margin-x align-middle product-main-info">
+                    <div class="cell small-12 medium-5 text-center">
+                        <img [src]="getProductImage(getProduct())" class="product-image product-image-large"
+                            alt="Product image">
+                    </div>
+                    <div class="cell small-12 medium-7">
+                        <div class="product-header-block">
+                            <h3 class="product-main-name">{{ getProduct().productName }}</h3>
+                            <ng-container *ngIf="getProduct() as product">
+                                <span class="product-badge" *ngIf="product.discount && product.discount > 0">
+                                    -{{ product.discount }}% OFF
+                                </span>
+                            </ng-container>
+                        </div>
+                        <p class="product-brand-model">
+                            <span class="brand"><strong>Brand:</strong> {{ getProduct().productBrand }}</span>
+                            <span class="divider"></span>
+                            <span class="model"><strong>Model:</strong> {{ getProduct().productModel }}</span>
+                        </p>
+                        <div class="product-highlight-row">
+                            <span class="price-tag-highlight">${{ getProduct()?.productPrice?.toFixed(2) }}</span>
+                            <span class="product-stock-info" *ngIf="getProduct() as p">
+                                <ng-container *ngIf="p.unitStock != null && p.unitStock > 0; else outOfStock">
+                                    <span class="stock-available"><i class="fi-check"></i> In Stock {{ p.unitStock
+                                        }}</span>
+                                </ng-container>
+                            </span>
+                            <ng-template #outOfStock>
+                                <span class="out-of-stock-label">
+                                    <i class="fi-x icon-unavailable"></i> Out of stock
+                                </span>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Main Info Card -->
+
+                <!-- Details Grid -->
+                <div class="grid-x grid-margin-x grid-margin-y product-info-table margin-top-2">
+                    <div class="cell small-12 medium-4 info-pair">
+                        <label><i class="fi-pound"></i> Product ID</label>
+                        <span>{{ getProduct().productId }}</span>
+                    </div>
+                    <div class="cell small-12 medium-4 info-pair">
+                        <label><i class="fi-price-tag"></i> Category</label>
+                        <span>{{ getProductCategory(getProduct()).name }}</span>
+                    </div>
+                    <div class="cell small-12 medium-4 info-pair">
+                        <label><i class="fi-percent"></i> Discount</label>
+                        <span>{{ getProduct().discount }}%</span>
+                    </div>
+                </div>
+                <div class="grid-x grid-margin-x grid-margin-y description-block-modern">
+                    <div class="cell small-12">
+                        <label class="desc-label"><i class="fi-info"></i> Description</label>
+                        <div class="product-desc-modern">
+                            {{ getProduct().productDescription }}
+                        </div>
+                    </div>
+                </div>
+                <!-- Buttons -->
+                <div class="grid-x grid-margin-x grid-margin-y align-center-middle margin-top-3">
+                    <div class="cell small-12 medium-shrink">
+                        <button class="button secondary expanded" (click)="goBack()">Back</button>
+                    </div>
+                    <ng-container *ngIf="getHasAuthorityAdmin()">
+                        <div class="cell small-12 medium-shrink">
+                            <a class="button expanded info-btn"
+                                [routerLink]="['/products/addImage', getProduct().productId]">
+                                Add Image
+                            </a>
+                        </div>
+                        <div class="cell small-12 medium-shrink">
+                            <a class="button warning expanded"
+                                [routerLink]="['/products/updateProduct', getProduct().productId]">
+                                Update
+                            </a>
+                        </div>
+                        <div class="cell small-12 medium-shrink">
+                            <button class="button alert expanded" (click)="deleteProduct(getProduct().productId)">
+                                Delete
+                            </button>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="getHasAuthorityUser()">
+                        <div class="cell small-12 medium-shrink" *ngIf="getProduct()?.unitStock! > 0">
+                            <button class="button success expanded" (click)="addToCart(getProduct()!.productId)">
+                                Order
+                            </button>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

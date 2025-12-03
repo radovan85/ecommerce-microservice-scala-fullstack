@@ -13,4 +13,3 @@ GET     /api/health                       com.radovan.play.controllers.HealthCon
 
 #metrics
 GET  /prometheus   com.radovan.play.controllers.PrometheusController.getMetrics
-

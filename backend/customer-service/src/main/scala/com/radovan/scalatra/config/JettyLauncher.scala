@@ -2,7 +2,7 @@ package com.radovan.scalatra.config
 
 import com.google.inject.{Guice, Injector}
 import com.radovan.scalatra.controllers.{CustomerController, HealthController, PrometheusController, ShippingAddressController}
-import com.radovan.scalatra.modules.{AutoBindModule, HibernateModule, MapperModule}
+import com.radovan.scalatra.modules.{AutoBindModule, InstanceModule}
 import com.radovan.scalatra.services.EurekaRegistrationService
 import org.eclipse.jetty.ee10.servlet.{ServletContextHandler, ServletHolder}
 import org.eclipse.jetty.server.Server
@@ -12,13 +12,13 @@ object JettyLauncher {
   def main(args: Array[String]): Unit = {
     // Kreiraj Guice injector sa više modula, uključujući HibernateModule
     val injector: Injector = Guice.createInjector(
-      new HibernateModule,    // Hibernate konfiguracija
-      new MapperModule,       // Mapper konfiguracija
+      new InstanceModule,
       new AutoBindModule      // Automatsko bindovanje servisa i kontrolera
     )
 
-    // Podešavanje Jetty servera na portu 8083
-    val server = new Server(8083)
+
+    val port = System.getenv("SCALATRA_PORT").toInt
+    val server = new Server(port)
     val context = new ServletContextHandler(ServletContextHandler.SESSIONS)
     context.setContextPath("/")
     server.setHandler(context)
@@ -42,8 +42,8 @@ object JettyLauncher {
       context.addServlet(new ServletHolder("addressController", addressController), "/api/addresses/*")
       context.addServlet(new ServletHolder("prometheusController", prometheusController), "/prometheus/*")
 
-      println("✅ Server started at http://localhost:8083")
-      println("✅ Health check: http://localhost:8083/api/health")
+      println(s"✅ Server started at http://localhost:$port")
+      println(s"✅ Health check: http://localhost:$port/api/health")
 
       server.join()
     } catch {

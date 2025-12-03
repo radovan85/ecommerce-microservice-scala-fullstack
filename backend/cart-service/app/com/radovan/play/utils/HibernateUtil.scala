@@ -1,63 +1,59 @@
 package com.radovan.play.utils
 
-import com.zaxxer.hikari.{HikariConfig, HikariDataSource}
-import jakarta.inject.Singleton
-import org.hibernate.cfg.Configuration
-import org.hibernate.boot.registry.{StandardServiceRegistry, StandardServiceRegistryBuilder}
 import org.hibernate.SessionFactory
+import org.hibernate.boot.MetadataSources
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder
+import org.hibernate.service.ServiceRegistry
 
-@Singleton
-class HibernateUtil {
+import com.zaxxer.hikari.{HikariConfig, HikariDataSource}
 
-  val sessionFactory: SessionFactory = buildSessionFactory()
+class HibernateUtil  {
 
-  private def buildSessionFactory(): SessionFactory = {
-    try {
-      // 🔧 Konfiguracija Hikari pool-a
-      val hikariConfig = new HikariConfig()
-      val dbUrl = System.getenv("DB_URL")
-      val dbPassword = System.getenv("DB_PASSWORD")
-      val dbUsername = System.getenv("DB_USERNAME")
-      if (dbUrl == null || dbUsername == null || dbPassword == null) throw new IllegalStateException("Database environment variables are missing!")
-      hikariConfig.setJdbcUrl(dbUrl)
-      hikariConfig.setUsername(dbUsername)
-      hikariConfig.setPassword(dbPassword)
-      hikariConfig.setDriverClassName("org.postgresql.Driver")
-      hikariConfig.setMaximumPoolSize(10)
-      hikariConfig.setMinimumIdle(2)
-      hikariConfig.setIdleTimeout(600000)
-      hikariConfig.setConnectionTimeout(30000)
-      hikariConfig.setMaxLifetime(1800000)
-
-      val hikariDataSource = new HikariDataSource(hikariConfig)
-
-      // 🧠 Hibernate konfiguracija
-      val configuration = new Configuration()
-      configuration.getProperties.put("hibernate.connection.datasource", hikariDataSource)
-      configuration.setProperty("hibernate.hbm2ddl.auto", "update")
-      configuration.setProperty("hibernate.show_sql", "false")
-      configuration.setProperty("hibernate.format_sql", "false")
-      configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
-
-
-      // ➕ Dodaj entity klasu/e
-      configuration.addAnnotatedClass(classOf[com.radovan.play.entity.CartEntity])
-      configuration.addAnnotatedClass(classOf[com.radovan.play.entity.CartItemEntity])
-      // Dodaj još ako treba...
-
-      // 🧱 SessionFactory setup
-      val serviceRegistry: StandardServiceRegistry =
-        new StandardServiceRegistryBuilder()
-          .applySettings(configuration.getProperties)
-          .build()
-
-      configuration.buildSessionFactory(serviceRegistry)
-    } catch {
-      case ex: Throwable =>
-        System.err.println(s"Initial SessionFactory creation failed: $ex")
-        throw new ExceptionInInitializerError(ex)
-    }
+  private val hikariDataSource: HikariDataSource = {
+    val hikariConfig = new HikariConfig()
+    val persistenceUrl = System.getenv("PERSISTENCE_URL")
+    val persistencePassword = System.getenv("PERSISTENCE_PASSWORD")
+    val persistenceUsername = System.getenv("PERSISTENCE_USERNAME")
+    if (persistenceUsername == null || persistencePassword == null || persistenceUrl == null) throw new IllegalStateException("Database environment variables are missing!")
+    hikariConfig.setJdbcUrl(persistenceUrl)
+    hikariConfig.setUsername(persistenceUsername)
+    hikariConfig.setPassword(persistencePassword)
+    hikariConfig.setDriverClassName("org.postgresql.Driver")
+    hikariConfig.setMinimumIdle(2)
+    hikariConfig.setIdleTimeout(600000)
+    hikariConfig.setMaximumPoolSize(10)
+    hikariConfig.setConnectionTimeout(30000)
+    hikariConfig.setMaxLifetime(1800000)
+    new HikariDataSource(hikariConfig)
   }
 
+  private val serviceRegistry: ServiceRegistry =
+    new StandardServiceRegistryBuilder()
+      .applySetting("hibernate.boot.allow_jdbc_metadata_access", "false")
+      .applySetting("hibernate.hbm2ddl.auto", "update")
+      .applySetting("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
+      .applySetting("hibernate.connection.datasource", hikariDataSource)
+      .applySetting("hibernate.show_sql", "false")
+      .applySetting("hibernate.format_sql", "false")
+      .build()
+
+  private val sessionFactory: SessionFactory =
+    new MetadataSources(serviceRegistry)
+      .addAnnotatedClass(classOf[com.radovan.play.entity.CartEntity])
+      .addAnnotatedClass(classOf[com.radovan.play.entity.CartItemEntity])
+      .buildMetadata()
+      .buildSessionFactory()
+
   def getSessionFactory: SessionFactory = sessionFactory
+
+
+  def shutdown(): Unit = {
+    println("Shutting down HibernateUtil...")
+    if (sessionFactory != null) {
+      sessionFactory.close()
+    }
+    if (hikariDataSource != null) {
+      hikariDataSource.close()
+    }
+  }
 }

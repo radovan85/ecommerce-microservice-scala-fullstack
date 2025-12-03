@@ -1,4 +1,4 @@
-FROM openjdk:17-alpine
+FROM amazoncorretto:21-alpine-jdk
 
 RUN apk add --no-cache bash unzip
 

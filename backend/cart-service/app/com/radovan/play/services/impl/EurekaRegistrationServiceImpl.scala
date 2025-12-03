@@ -23,7 +23,7 @@ class EurekaRegistrationServiceImpl @Inject() (
   private val EUREKA_SERVER_URL = "http://localhost:8761/eureka/apps"
   private val appName = "cart-service"
   private val instanceId = s"$appName-01"
-  private val port = 9001
+  private val port = System.getenv("PLAY_PORT").toInt
 
   // 🕒 Periodično zakazivanje registracije
   actorSystem.scheduler.scheduleAtFixedRate(

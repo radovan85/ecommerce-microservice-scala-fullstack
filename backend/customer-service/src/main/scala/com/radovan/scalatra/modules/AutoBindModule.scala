@@ -7,7 +7,7 @@ import com.radovan.scalatra.repositories.{CustomerRepository, ShippingAddressRep
 import com.radovan.scalatra.repositories.impl.{CustomerRepositoryImpl, ShippingAddressRepositoryImpl}
 import com.radovan.scalatra.services.{CustomerService, EurekaRegistrationService, EurekaServiceDiscovery, PrometheusService, ShippingAddressService}
 import com.radovan.scalatra.services.impl.{CustomerServiceImpl, EurekaRegistrationServiceImpl, EurekaServiceDiscoveryImpl, PrometheusServiceImpl, ShippingAddressServiceImpl}
-import com.radovan.scalatra.utils.{JwtUtil, NatsUtils, PublicKeyCache, ServiceUrlProvider}
+import com.radovan.scalatra.utils.{JwtUtil, PublicKeyCache, ServiceUrlProvider}
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.prometheusmetrics.{PrometheusConfig, PrometheusMeterRegistry}
 import org.apache.pekko.actor.ActorSystem
@@ -39,7 +39,6 @@ class AutoBindModule extends AbstractModule {
     bind(classOf[ServiceUrlProvider]).asEagerSingleton()
     bind(classOf[TempConverter]).asEagerSingleton()
     bind(classOf[JwtUtil]).asEagerSingleton()
-    bind(classOf[NatsUtils]).asEagerSingleton()
     bind(classOf[PublicKeyCache]).asEagerSingleton()
     bind(classOf[CustomerNatsSender]).asEagerSingleton()
     bind(classOf[CustomerNatsListener]).asEagerSingleton()

@@ -1,33 +1,33 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { authGuard } from './guards/auth.guard';
-import { LoginComponent } from './components/login/login.component';
-import { unidentifiedGuard } from './guards/unidentified.guard';
-import { RegistrationFormComponent } from './components/registration/registration-form/registration-form.component';
-import { RegistrationCompletedComponent } from './components/registration/registration-completed/registration-completed.component';
-import { RegistrationFailedComponent } from './components/registration/registration-failed/registration-failed.component';
-import { adminGuard } from './guards/admin.guard';
-import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
-import { CategoryListComponent } from './components/productCategories/category-list/category-list.component';
-import { CategoryFormComponent } from './components/productCategories/category-form/category-form.component';
-import { CategoryUpdateFormComponent } from './components/productCategories/category-update-form/category-update-form.component';
-import { ProductListComponent } from './components/products/product-list/product-list.component';
-import { ProductFormComponent } from './components/products/product-form/product-form.component';
-import { ProductDetailsComponent } from './components/products/product-details/product-details.component';
-import { ProductUpdateFormComponent } from './components/products/product-update-form/product-update-form.component';
-import { ImageFormComponent } from './components/products/image-form/image-form.component';
-import { CustomerListComponent } from './components/customers/customer-list/customer-list.component';
-import { CustomerDetailsComponent } from './components/customers/customer-details/customer-details.component';
-import { CartComponent } from './components/cart/cart/cart.component';
-import { InvalidCartComponent } from './components/cart/invalid-cart/invalid-cart.component';
-import { userGuard } from './guards/user.guard';
-import { OrderDetailsComponent } from './components/order/order-details/order-details.component';
-import { OrderListComponent } from './components/order/order-list/order-list.component';
-import { OrderCompletedComponent } from './components/order/order-completed/order-completed.component';
-import { OrderConfirmationComponent } from './components/order/order-confirmation/order-confirmation.component';
-import { PhoneConfirmationComponent } from './components/order/phone-confirmation/phone-confirmation.component';
-import { OrderCancelledComponent } from './components/order/order-cancelled/order-cancelled.component';
-import { AddressConfirmationComponent } from './components/order/address-confirmation/address-confirmation.component';
+import { LoginComponent } from './components/login/login';
+import { authGuard } from './guards/auth-guard';
+import { unidentifiedGuard } from './guards/unidentified-guard';
+import { HomeComponent } from './components/home/home';
+import { adminGuard } from './guards/admin-guard';
+import { CategoryListComponent } from './components/productCategories/category-list/category-list';
+import { CategoryFormComponent } from './components/productCategories/category-form/category-form';
+import { CategoryUpdateFormComponent } from './components/productCategories/category-update-form/category-update-form';
+import { ProductListComponent } from './components/products/product-list/product-list';
+import { ProductFormComponent } from './components/products/product-form/product-form';
+import { ProductUpdateFormComponent } from './components/products/product-update-form/product-update-form';
+import { ProductDetailsComponent } from './components/products/product-details/product-details';
+import { RegistrationFormComponent } from './components/registration/registration-form/registration-form';
+import { userGuard } from './guards/user-guard';
+import { CartComponent } from './components/cart/cart/cart';
+import { InvalidCartComponent } from './components/cart/invalid-cart/invalid-cart';
+import { RegistrationFailedComponent } from './components/registration/registration-failed/registration-failed';
+import { RegistrationCompletedComponent } from './components/registration/registration-completed/registration-completed';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel';
+import { AddressConfirmationComponent } from './components/order/address-confirmation/address-confirmation';
+import { OrderCancelledComponent } from './components/order/order-cancelled/order-cancelled';
+import { PhoneConfirmationComponent } from './components/order/phone-confirmation/phone-confirmation';
+import { OrderConfirmationComponent } from './components/order/order-confirmation/order-confirmation';
+import { OrderCompletedComponent } from './components/order/order-completed/order-completed';
+import { OrderListComponent } from './components/order/order-list/order-list';
+import { OrderDetailsComponent } from './components/order/order-details/order-details';
+import { ImageFormComponent } from './components/products/image-form/image-form';
+import { CustomerListComponent } from './components/customers/customer-list/customer-list';
+import { CustomerDetailsComponent } from './components/customers/customer-details/customer-details';
 
 export const routes: Routes = [
 
@@ -40,24 +40,6 @@ export const routes: Routes = [
     {
         path: `login`,
         component: LoginComponent,
-        canActivate: [unidentifiedGuard]
-    },
-
-    {
-        path: `register`,
-        component: RegistrationFormComponent,
-        canActivate: [unidentifiedGuard]
-    },
-
-    {
-        path: `registration/completed`,
-        component: RegistrationCompletedComponent,
-        canActivate: [unidentifiedGuard]
-    },
-
-    {
-        path: `registration/failed`,
-        component: RegistrationFailedComponent,
         canActivate: [unidentifiedGuard]
     },
 
@@ -98,15 +80,15 @@ export const routes: Routes = [
     },
 
     {
-        path: `products/productDetails/:productId`,
-        component: ProductDetailsComponent,
-        canActivate: [authGuard]
-    },
-
-    {
         path: `products/updateProduct/:productId`,
         component: ProductUpdateFormComponent,
         canActivate: [adminGuard]
+    },
+
+    {
+        path: `products/productDetails/:productId`,
+        component: ProductDetailsComponent,
+        canActivate: [authGuard]
     },
 
     {
@@ -125,6 +107,24 @@ export const routes: Routes = [
         path: `customers/customerDetails/:customerId`,
         component: CustomerDetailsComponent,
         canActivate: [adminGuard]
+    },
+
+    {
+        path: `register`,
+        component: RegistrationFormComponent,
+        canActivate: [unidentifiedGuard]
+    },
+
+    {
+        path: `registration/completed`,
+        component: RegistrationCompletedComponent,
+        canActivate: [unidentifiedGuard]
+    },
+
+    {
+        path: `registration/failed`,
+        component: RegistrationFailedComponent,
+        canActivate: [unidentifiedGuard]
     },
 
     {
@@ -180,6 +180,7 @@ export const routes: Routes = [
         component: OrderDetailsComponent,
         canActivate: [adminGuard]
     },
+
 
 
     {

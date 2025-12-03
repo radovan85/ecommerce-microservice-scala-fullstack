@@ -17,7 +17,8 @@ object JettyLauncher {
       new AutoBindModule
     )
 
-    val server = new Server(8080)
+    val port = System.getenv("SCALATRA_PORT").toInt
+    val server = new Server(port)
     val context = new ServletContextHandler(ServletContextHandler.SESSIONS)
     context.setContextPath("/")
     server.setHandler(context)
@@ -41,8 +42,8 @@ object JettyLauncher {
       context.addServlet(new ServletHolder("healthController", healthController), "/api/health/*")
       context.addServlet(new ServletHolder("prometheusController", prometheusController), "/prometheus/*")
 
-      println("✅ Server started at http://localhost:8080")
-      println("✅ Health check: http://localhost:8080/api/health")
+      println(s"✅ Server started at http://localhost:$port")
+      println(s"✅ Health check: http://localhost:$port/api/health")
 
       server.join()
     } catch {

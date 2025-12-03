@@ -7,4 +7,3 @@ variable "consul_container_name" {
   description = "Name of the Consul container"
   default     = "consul"
 }
-

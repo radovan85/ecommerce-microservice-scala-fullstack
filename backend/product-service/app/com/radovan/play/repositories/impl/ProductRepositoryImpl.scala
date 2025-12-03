@@ -65,7 +65,7 @@ class ProductRepositoryImpl extends ProductRepository{
 
   override def deleteById(productId: Integer): Unit = {
     withSession { session =>
-      val product = session.get(classOf[ProductEntity], productId)
+      val product = session.find(classOf[ProductEntity], productId)
       if (product != null) {
         session.remove(product)
       }

@@ -23,7 +23,7 @@ class EurekaRegistrationServiceImpl @Inject() (
 
   private val eurekaServerUrl = "http://localhost:8761/eureka/apps"
   private val appName = "api-gateway"
-  private val port = 8080
+  private val port = System.getenv("SCALATRA_PORT").toInt
 
   private val scheduler: Cancellable = system.scheduler.scheduleAtFixedRate(
     initialDelay = scala.concurrent.duration.Duration.Zero,

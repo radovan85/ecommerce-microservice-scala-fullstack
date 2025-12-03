@@ -2,14 +2,15 @@ terraform {
   required_providers {
     docker = {
       source  = "kreuzwerker/docker"
-      version = "~> 2.25.0"
+      version = ">= 3.0.2"
     }
     nomad = {
       source  = "hashicorp/nomad"
-      version = "~> 1.4.0"
+      version = ">= 1.5.0"
     }
   }
 }
+
 
 provider "docker" {
   host = "unix:///var/run/docker.sock"
@@ -19,14 +20,13 @@ provider "nomad" {
   address = "http://127.0.0.1:4646"
 }
 
-# === Consul image i kontejner ===
 resource "docker_image" "consul" {
   name = var.consul_image
 }
 
 resource "docker_container" "consul" {
   name         = var.consul_container_name
-  image        = docker_image.consul.latest
+  image        = docker_image.consul.name   # <-- promenjeno
   network_mode = "host"
 
   command = [

@@ -1,0 +1,41 @@
+<div class="grid-container home-slider-wrapper">
+    <div class="image-slider">
+  
+      <!-- Slides -->
+      <div 
+        class="slide" 
+        *ngFor="let image of images; let i = index"
+        [class.active]="i === currentIndex">
+        
+        <img [src]="image.src" [alt]="image.alt" class="slide-img">
+        
+        <div class="slide-overlay"></div>
+  
+        <!-- Optional Hero Text -->
+        <div class="slide-content">
+          <h2>Discover the Best Deals</h2>
+          <p>Top electronics, gadgets & accessories.</p>
+        </div>
+      </div>
+  
+      <!-- Arrows -->
+      <div class="arrow arrow-left" (click)="moveSlide('prev')">
+        <span>&#10094;</span>
+      </div>
+  
+      <div class="arrow arrow-right" (click)="moveSlide('next')">
+        <span>&#10095;</span>
+      </div>
+  
+      <!-- Dots -->
+      <div class="dots">
+        <span class="dot"
+              *ngFor="let image of images; let i = index"
+              (click)="currentSlide(i)"
+              [class.active]="i === currentIndex">
+        </span>
+      </div>
+  
+    </div>
+  </div>
+  

@@ -1,63 +1,67 @@
 package com.radovan.spring.config
 
-import com.fasterxml.jackson.databind.{ObjectMapper, SerializationFeature}
+
+import com.radovan.spring.interceptors.{AuthInterceptor, UnifiedMetricsInterceptor}
+import com.radovan.spring.utils.NatsUtils
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.prometheusmetrics.{PrometheusConfig, PrometheusMeterRegistry}
 import org.modelmapper.ModelMapper
-import org.modelmapper.config.Configuration.AccessLevel
 import org.modelmapper.convention.MatchingStrategies
-import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.context.annotation.{Bean, ComponentScan, Configuration, Primary}
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.web.client.RestTemplate
-import com.radovan.spring.interceptors.{AuthInterceptor, UnifiedMetricsInterceptor}
-import io.micrometer.core.instrument.MeterRegistry
-import io.micrometer.prometheusmetrics.{PrometheusConfig, PrometheusMeterRegistry}
 import org.springframework.web.servlet.config.annotation.{EnableWebMvc, InterceptorRegistry, WebMvcConfigurer}
+import tools.jackson.databind.ObjectMapper
 
 @Configuration
-@EnableScheduling
-@ComponentScan(basePackages = Array("com.radovan.spring"))
 @EnableWebMvc
-class SpringMvcConfiguration extends WebMvcConfigurer {
+@ComponentScan(Array("com.radovan.spring"))
+@EnableScheduling
+class SpringMvcConfiguration(
+                              private val authInterceptorProvider: ObjectProvider[AuthInterceptor],
+                              private val metricsInterceptorProvider: ObjectProvider[UnifiedMetricsInterceptor]
+                            ) extends WebMvcConfigurer {
 
-
-  private var authInterceptor: AuthInterceptor = _
-  private var metricsInterceptor:UnifiedMetricsInterceptor = _
-
-  @Autowired
-  private def initialize(authInterceptor: AuthInterceptor,metricsInterceptor: UnifiedMetricsInterceptor):Unit = {
-    this.authInterceptor = authInterceptor
-    this.metricsInterceptor = metricsInterceptor
-  }
-
+  @Bean
+  def getObjectMapper: ObjectMapper = new ObjectMapper()
 
   @Bean
   def getMapper: ModelMapper = {
-    val modelMapper = new ModelMapper()
-    modelMapper.getConfiguration
+    val returnValue = new ModelMapper()
+    returnValue.getConfiguration
       .setAmbiguityIgnored(true)
-      .setFieldAccessLevel(AccessLevel.PRIVATE)
+      .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
       .setMatchingStrategy(MatchingStrategies.STRICT)
-    modelMapper
+    returnValue
   }
-
-  @Bean
-  def getObjectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT)
 
   @Bean
   def getRestTemplate: RestTemplate = new RestTemplate()
 
   @Bean
-  @Primary
-  def prometheusMeterRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
-
+  def getNatsUtils: NatsUtils = new NatsUtils()
 
   @Bean
-  def meterRegistry(prometheusRegistry: PrometheusMeterRegistry):MeterRegistry = prometheusRegistry
+  @Primary
+  def prometheusMeterRegistry: PrometheusMeterRegistry =
+    new PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
+
+  @Bean
+  def meterRegistry(prometheusRegistry: PrometheusMeterRegistry): MeterRegistry =
+    prometheusRegistry
 
   override def addInterceptors(registry: InterceptorRegistry): Unit = {
-    registry.addInterceptor(authInterceptor)
-      .excludePathPatterns("/prometheus")
-    registry.addInterceptor(metricsInterceptor)
-      .excludePathPatterns("/prometheus")
+    val authInterceptor = authInterceptorProvider.getIfAvailable
+    val metricsInterceptor = metricsInterceptorProvider.getIfAvailable
+
+    if (authInterceptor != null) {
+      registry.addInterceptor(authInterceptor).excludePathPatterns("/prometheus")
+    }
+    if (metricsInterceptor != null) {
+      registry.addInterceptor(metricsInterceptor).excludePathPatterns("/prometheus", "/api/health")
+    }
   }
+
+
 }

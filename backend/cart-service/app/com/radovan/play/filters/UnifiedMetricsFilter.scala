@@ -11,8 +11,9 @@ class UnifiedMetricsFilter @Inject()(
                                     )(implicit ec: ExecutionContext) extends EssentialFilter {
 
   override def apply(next: EssentialAction): EssentialAction = EssentialAction { requestHeader =>
-    if (requestHeader.path == "/prometheus") {
-      next(requestHeader) // 🚫 Preskoči metrikovanje za Prometheus scrape
+    // 🚫 Preskoči metrikovanje za Prometheus scrape i Health check
+    if (requestHeader.path == "/prometheus" || requestHeader.path == "/api/health") {
+      next(requestHeader)
     } else {
       val startTimeNs = System.nanoTime()
       prometheus.increaseRequestCount()
@@ -25,5 +26,4 @@ class UnifiedMetricsFilter @Inject()(
       }
     }
   }
-
 }

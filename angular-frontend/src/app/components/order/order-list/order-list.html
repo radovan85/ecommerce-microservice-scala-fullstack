@@ -1,0 +1,59 @@
+<div class="grid-container" style="margin-bottom: 8rem;margin-top: 8rem;">
+    <div class="grid-x align-center">
+      <div class="cell small-12">
+  
+        <!-- Naslov -->
+        <div class="text-center margin-bottom-2">
+          <h1 [innerHTML]="'Order List'"></h1>
+        </div>
+  
+        <!-- Tabela -->
+        <table class="hover stack shadow-card">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-template ngFor let-tempOrder [ngForOf]="getPaginatedOrders()">
+              <ng-template ngFor let-tempCustomer [ngForOf]="getAllCustomers()">
+                <ng-container *ngIf="tempOrder.cartId === tempCustomer.cartId">
+                  <tr>
+                    <td [innerHTML]="tempOrder.orderId"></td>
+                    <td [innerHTML]="getUserById(tempCustomer.userId).firstName"></td>
+                    <td [innerHTML]="getUserById(tempCustomer.userId).lastName"></td>
+                    <td [innerHTML]="getUserById(tempCustomer.userId).email"></td>
+                    <td>
+                      <button class="button tiny primary" 
+                              [innerHTML]="'Details'" 
+                              [routerLink]="['/order/orderDetails/', tempOrder.orderId]">
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </ng-template>
+            </ng-template>
+          </tbody>
+        </table>
+  
+        <!-- Paginacija -->
+        <div class="grid-x align-center margin-top-3" *ngIf="getAllOrders().length > 0">
+          <div class="cell shrink">
+            <button class="button secondary" (click)="prevPage()" [disabled]="getCurrentPage() == 1">Previous</button>
+          </div>
+          <div class="cell shrink text-center margin-left-2 margin-right-2">
+            <span>Page {{ getCurrentPage() }} / {{ getTotalPages() }}</span>
+          </div>
+          <div class="cell shrink">
+            <button class="button secondary" (click)="nextPage()" [disabled]="getCurrentPage() == getTotalPages()">Next</button>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  

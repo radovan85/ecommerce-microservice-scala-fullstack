@@ -1,8 +1,6 @@
 package com.radovan.spring.brokers
 
-import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
-import com.fasterxml.jackson.databind.node.ObjectNode
-import com.radovan.spring.converter.DeserializeConverter
+
 import com.radovan.spring.dto.UserDto
 import com.radovan.spring.exceptions.ExistingInstanceException
 import com.radovan.spring.services.UserService
@@ -15,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
+import tools.jackson.databind.{JsonNode, ObjectMapper}
+import tools.jackson.databind.node.ObjectNode
 
 import java.nio.charset.StandardCharsets
 import scala.jdk.CollectionConverters._
@@ -27,21 +27,18 @@ class UserMessageListener {
   private var userService: UserService = _
   private var objectMapper: ObjectMapper = _
   private var jwtUtil: JwtUtil = _
-  private var deserializeConverter: DeserializeConverter = _
 
   @Autowired
   private def initialize(
                           natsUtils: NatsUtils,
                           userService: UserService,
                           objectMapper: ObjectMapper,
-                          jwtUtil: JwtUtil,
-                          deserializeConverter: DeserializeConverter
+                          jwtUtil: JwtUtil
                         ): Unit = {
     this.natsUtils = natsUtils
     this.userService = userService
     this.objectMapper = objectMapper
     this.jwtUtil = jwtUtil
-    this.deserializeConverter = deserializeConverter
     initListeners()
   }
 
@@ -58,12 +55,12 @@ class UserMessageListener {
   private def handleMessage(msg: Message): Unit = {
     try {
       msg.getSubject match {
-        case "user.get"       => handleUserGet(msg)
-        case "user.create"    => handleUserCreate(msg)
+        case "user.get" => handleUserGet(msg)
+        case "user.create" => handleUserCreate(msg)
         case subject if subject.startsWith("user.getById.") => handleUserGetById(msg)
-        case subject if subject.startsWith("user.delete.")    => handleUserDelete(msg)
-        case subject if subject.startsWith("user.suspend.")   => handleUserSuspend(msg)
-        case subject if subject.startsWith("user.reactivate.")=> handleUserReactivate(msg)
+        case subject if subject.startsWith("user.delete.") => handleUserDelete(msg)
+        case subject if subject.startsWith("user.suspend.") => handleUserSuspend(msg)
+        case subject if subject.startsWith("user.reactivate.") => handleUserReactivate(msg)
         case _ => // ignore unknown subjects or log if needed
       }
     } catch {
@@ -90,7 +87,12 @@ class UserMessageListener {
 
   private def handleUserCreate(msg: Message): Unit = {
     try {
-      val userDto: UserDto = deserializeConverter.payloadToUserDto(new String(msg.getData, StandardCharsets.UTF_8))
+      // direktno parsiranje JSON payload-a u UserDto
+      val userDto: UserDto = objectMapper.readValue(
+        new String(msg.getData, StandardCharsets.UTF_8),
+        classOf[UserDto]
+      )
+
       val createdUser: UserDto = userService.addUser(userDto)
 
       val response: ObjectNode = objectMapper.createObjectNode()
@@ -109,7 +111,6 @@ class UserMessageListener {
         sendErrorResponse(msg, "Error creating user", HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
-
 
 
   private def handleUserDelete(msg: Message): Unit =
@@ -185,7 +186,6 @@ class UserMessageListener {
       case _: Throwable => // ignore exceptions while sending error
     }
   }
-
 
 
   private def extractUserId(msg: Message): Int =

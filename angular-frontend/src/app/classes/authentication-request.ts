@@ -18,4 +18,3 @@ export class AuthenticationRequest {
         this._password = value;
     }
 }
-

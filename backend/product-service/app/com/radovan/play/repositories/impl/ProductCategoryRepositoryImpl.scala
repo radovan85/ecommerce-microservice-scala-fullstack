@@ -53,7 +53,7 @@ class ProductCategoryRepositoryImpl extends ProductCategoryRepository{
 
   override def deleteById(categoryId: Integer): Unit = {
     withSession {session =>
-      val categoryEntity = session.get(classOf[ProductCategoryEntity], categoryId)
+      val categoryEntity = session.find(classOf[ProductCategoryEntity], categoryId)
       if(categoryEntity!=null) session.remove(categoryEntity)
     }
   }

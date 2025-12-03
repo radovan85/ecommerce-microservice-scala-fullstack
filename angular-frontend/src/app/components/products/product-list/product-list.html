@@ -1,0 +1,59 @@
+<!-- ============  product-list.component.html  ============ -->
+<div class="products-shell" style="margin-top: 8rem; margin-bottom: 8rem;">
+  <header class="products-header">
+    <h1 class="products-title">Products</h1>
+
+    <ng-container *ngIf="getHasAuthorityAdmin()">
+      <a class="add-product-btn" routerLink="/products/addProduct">
+        <i class="fi-plus"></i> Add Product
+      </a>
+    </ng-container>
+  </header>
+
+  <section class="products-grid">
+    <article
+      class="product-tile"
+      *ngFor="let tempProduct of getPaginatedProducts()">
+
+      <div class="product-visual">
+        <img [src]="getProductImage(tempProduct)" alt="" />
+      </div>
+
+      <div class="product-meta">
+        <h2 class="product-name">{{ tempProduct.productName }}</h2>
+        <span class="product-price">€{{ tempProduct.productPrice?.toFixed(2) }}</span>
+
+        <div class="product-actions">
+          <a class="action-btn primary"
+             [routerLink]="['/products/productDetails/', tempProduct.productId]">
+            Details
+          </a>
+
+          <ng-container *ngIf="getHasAuthorityUser()">
+            <button class="action-btn warning">Order</button>
+          </ng-container>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <footer class="products-footer" *ngIf="getAllProducts().length">
+    <button
+      class="pagination-btn"
+      (click)="prevPage()"
+      [disabled]="getCurrentPage() === 1">
+      ‹
+    </button>
+
+    <span class="pagination-info">
+      {{ getCurrentPage() }} / {{ getTotalPages() }}
+    </span>
+
+    <button
+      class="pagination-btn"
+      (click)="nextPage()"
+      [disabled]="getCurrentPage() === getTotalPages()">
+      ›
+    </button>
+  </footer>
+</div>

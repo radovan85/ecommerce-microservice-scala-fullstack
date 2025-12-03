@@ -22,9 +22,10 @@ job "customer-service" {
       }
 
       env {
-        DB_URL      = "jdbc:postgresql://localhost:5432/ecommerce-db"
-        DB_USERNAME = "postgres"
-        DB_PASSWORD = "1111"
+        PERSISTENCE_URL      = "jdbc:postgresql://localhost:5432/ecommerce-db"
+        PERSISTENCE_USERNAME = "postgres"
+        PERSISTENCE_PASSWORD = "1111"
+        SCALATRA_PORT = "8083"
       }
       
       lifecycle {

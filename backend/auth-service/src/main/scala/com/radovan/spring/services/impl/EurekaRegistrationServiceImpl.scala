@@ -1,12 +1,12 @@
 package com.radovan.spring.services.impl
 
-import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.radovan.spring.services.EurekaRegistrationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.{HttpEntity, HttpHeaders, MediaType}
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
+import tools.jackson.databind.{JsonNode, ObjectMapper}
 
 import java.net.InetAddress
 import scala.collection.mutable
@@ -30,7 +30,7 @@ class EurekaRegistrationServiceImpl  extends EurekaRegistrationService {
 
       val appName = "auth-service"
       val instanceId = appName + "-01"
-      val port = 8081
+      val port = System.getenv("SPRING_PORT").toInt
 
       // Kreiranje podataka za registraciju koristeći java.util.Map
       val instanceData = new mutable.HashMap[String,Any]()

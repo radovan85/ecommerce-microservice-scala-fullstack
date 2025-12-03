@@ -30,16 +30,16 @@ class JpaPersistence {
   }
 
   @Bean def getHikariDataSource: HikariDataSource = {
-    val dataSource = new HikariDataSource
-    dataSource.setDriverClassName("org.postgresql.Driver")
-    val dbUrl = System.getenv("DB_URL")
-    val dbPassword = System.getenv("DB_PASSWORD")
-    val dbUsername = System.getenv("DB_USERNAME")
-    if (dbUrl == null || dbUsername == null || dbPassword == null) throw new IllegalStateException("Database environment variables are missing!")
-    dataSource.setJdbcUrl(dbUrl)
-    dataSource.setUsername(dbUsername)
-    dataSource.setPassword(dbPassword)
-    dataSource
+    val returnValue = new HikariDataSource
+    val persistenceUrl = System.getenv("PERSISTENCE_URL")
+    val persistencePassword = System.getenv("PERSISTENCE_PASSWORD")
+    val persistenceUsername = System.getenv("PERSISTENCE_USERNAME")
+    if (persistenceUsername == null || persistencePassword == null || persistenceUrl == null) throw new IllegalStateException("Database environment variables are missing!")
+    returnValue.setJdbcUrl(persistenceUrl)
+    returnValue.setUsername(persistenceUsername)
+    returnValue.setPassword(persistencePassword)
+    returnValue.setDriverClassName("org.postgresql.Driver")
+    returnValue
   }
 
   @Bean def transactionManager: PlatformTransactionManager = {

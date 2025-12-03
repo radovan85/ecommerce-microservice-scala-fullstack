@@ -22,9 +22,9 @@ job "cart-service" {
       }
 
       env {
-        DB_URL      = "jdbc:postgresql://localhost:5432/ecommerce-db"
-        DB_USERNAME = "postgres"
-        DB_PASSWORD = "1111"
+        PERSISTENCE_URL      = "jdbc:postgresql://localhost:5432/ecommerce-db"
+        PERSISTENCE_USERNAME = "postgres"
+        PERSISTENCE_PASSWORD = "1111"
         PLAY_PORT = "9001"
         PLAY_SECRET = "4Z2PJ;WnJ:Qo`>JTW4[7dSIIX5<w9/1rhl;yw_Q/qZxJ?HbLOhoZX0iAboYKT`65"
       }

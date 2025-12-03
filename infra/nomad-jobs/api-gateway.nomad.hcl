@@ -47,6 +47,7 @@ job "api-gateway" {
         JAVA_OPTS         = "-Xms128m -Xmx256m"
         GATEWAY_HOSTNAME  = "localhost"  # Pošto koristi host mrežu
         EUREKA_SERVER_URL = "http://localhost:8761/eureka"  # Direktan pristup Eureki
+        SCALATRA_PORT = "8080"
       }
       
       lifecycle {

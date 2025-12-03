@@ -5,10 +5,11 @@ job "grafana" {
   group "grafana" {
     count = 1
 
+    # 🛜 Host networking: izlažemo Grafanu direktno na hostu
     network {
       mode = "host"
       port "ui" {
-        static = 3000
+        static = 3000  
       }
     }
 
@@ -30,8 +31,9 @@ job "grafana" {
       env {
         GF_SECURITY_ADMIN_USER     = "admin"
         GF_SECURITY_ADMIN_PASSWORD = "grafana123"
+        GF_SERVER_HTTP_PORT        = "3000"  # Obavezno za promenu porta
       }
-      
+
       lifecycle {
         hook    = "prestart"
         sidecar = false
@@ -61,11 +63,12 @@ job "grafana" {
         provider = "nomad"
 
         check {
-          name     = "grafana-health"
-          type     = "http"
-          path     = "/"
-          interval = "10s"
-          timeout  = "2s"
+          name          = "grafana-health"
+          type          = "http"
+          path          = "/"
+          interval      = "10s"
+          timeout       = "2s"
+          address_mode  = "host"
         }
       }
     }

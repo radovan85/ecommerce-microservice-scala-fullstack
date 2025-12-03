@@ -3,6 +3,8 @@ package com.radovan.spring.utils
 import io.jsonwebtoken.{Claims, Jwts}
 import org.slf4j.{Logger, LoggerFactory}
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.PropertySource
+import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
 
 import java.security.{KeyFactory, PrivateKey, PublicKey}
@@ -13,7 +15,8 @@ import scala.jdk.CollectionConverters._
 import scala.util.{Failure, Success, Try}
 
 @Component
-class JwtUtil  {
+@PropertySource(Array("classpath:application.properties"))
+class JwtUtil @Autowired()(private val environment: Environment) {
 
   private val logger: Logger = LoggerFactory.getLogger(classOf[JwtUtil])
 
@@ -23,9 +26,9 @@ class JwtUtil  {
 
   @Autowired
   def init(): Unit = {
-    val privateKeyString = Option(System.getenv("JWT_PRIVATE_KEY"))
-    val publicKeyString  = Option(System.getenv("JWT_PUBLIC_KEY"))
-    val expiration       = Option(System.getenv("JWT_EXPIRATION"))
+    val privateKeyString = Option(environment.getProperty("jwt.private-key"))
+    val publicKeyString  = Option(environment.getProperty("jwt.public-key"))
+    val expiration       = Option(environment.getProperty("jwt.expiration"))
 
     if (privateKeyString.isEmpty || publicKeyString.isEmpty || expiration.isEmpty) {
       throw new IllegalStateException("JWT configuration missing in application.properties")

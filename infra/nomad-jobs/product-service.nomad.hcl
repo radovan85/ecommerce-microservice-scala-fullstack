@@ -22,9 +22,9 @@ job "product-service" {
       }
 
       env {
-        DB_URL      = "jdbc:postgresql://localhost:5432/ecommerce-db"
-        DB_USERNAME = "postgres"
-        DB_PASSWORD = "1111"
+        PERSISTENCE_URL      = "jdbc:postgresql://localhost:5432/ecommerce-db"
+        PERSISTENCE_USERNAME = "postgres"
+        PERSISTENCE_PASSWORD = "1111"
         PLAY_PORT = "9002"
         PLAY_SECRET = "4eNPew?:b<22r?9;HEN>FveN<Q83@s=oQ1v3ILZ0V^03XVSKVOIj^lm8/xnf/Zwo"
       }
