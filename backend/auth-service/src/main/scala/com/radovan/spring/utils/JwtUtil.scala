@@ -3,6 +3,7 @@ package com.radovan.spring.utils
 import io.jsonwebtoken.{Claims, Jwts}
 import org.slf4j.{Logger, LoggerFactory}
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.PropertySource
 import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
 
@@ -24,9 +25,10 @@ class JwtUtil @Autowired()(private val environment: Environment) {
 
   @Autowired
   def init(): Unit = {
-    val privateKeyString = Option(environment.getProperty("jwt.private-key"))
-    val publicKeyString  = Option(environment.getProperty("jwt.public-key"))
-    val expiration       = Option(environment.getProperty("jwt.expiration"))
+    val privateKeyString = Option(environment.getProperty("JWT_PRIVATE_KEY"))
+    val publicKeyString  = Option(environment.getProperty("JWT_PUBLIC_KEY"))
+    val expiration       = Option(environment.getProperty("JWT_EXPIRATION"))
+
 
     if (privateKeyString.isEmpty || publicKeyString.isEmpty || expiration.isEmpty) {
       throw new IllegalStateException("JWT configuration missing in application.properties")
