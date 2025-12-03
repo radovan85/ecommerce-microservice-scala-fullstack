@@ -1,0 +1,70 @@
+<div class="grid-container" style="margin-bottom: 8rem;margin-top: 8rem;">
+    <div class="grid-x align-center">
+      <div class="cell small-12">
+  
+        <!-- Naslov -->
+        <h2 class="text-center">👥 Customers</h2>
+        <hr>
+  
+        <!-- Tabela -->
+        <table class="hover stack shadow-card">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-template ngFor let-tempCustomer [ngForOf]="getPaginatedCustomers()">
+              <tr>
+                <td [innerHTML]="tempCustomer.customerId"></td>
+                <td [innerHTML]="retrieveUser(tempCustomer.userId).firstName"></td>
+                <td [innerHTML]="retrieveUser(tempCustomer.userId).lastName"></td>
+                <td [innerHTML]="retrieveUser(tempCustomer.userId).email"></td>
+                <td [innerHTML]="tempCustomer.customerPhone"></td>
+                <td>
+                  <ng-container *ngIf="retrieveUser(tempCustomer.userId); let user">
+                    <ng-container *ngIf="user.enabled === 1; then isEnabledContent else suspendedContent"></ng-container>
+  
+                    <ng-template #isEnabledContent>
+                      <span class="label success">Enabled</span>
+                    </ng-template>
+  
+                    <ng-template #suspendedContent>
+                      <span class="label alert">Suspended</span>
+                    </ng-template>
+                  </ng-container>
+                </td>
+                <td class="details-cell">
+                  <button class="button tiny primary" 
+                          [routerLink]="['/customers/customerDetails/', tempCustomer.customerId]" 
+                          [innerHTML]="'Details'">
+                  </button>
+                </td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </table>
+  
+        <!-- Paginacija -->
+        <div class="grid-x align-center margin-top-3" *ngIf="getAllCustomers().length > 0">
+          <div class="cell shrink">
+            <button class="button secondary" (click)="prevPage()" [disabled]="getCurrentPage() == 1">Previous</button>
+          </div>
+          <div class="cell shrink text-center margin-left-2 margin-right-2">
+            <span>Page {{ getCurrentPage() }} / {{ getTotalPages() }}</span>
+          </div>
+          <div class="cell shrink">
+            <button class="button secondary" (click)="nextPage()" [disabled]="getCurrentPage() == getTotalPages()">Next</button>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  

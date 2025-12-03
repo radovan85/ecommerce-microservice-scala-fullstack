@@ -1,0 +1,64 @@
+<div class="grid-container category-list-wrapper">
+  <h1 class="page-header text-center">Category List</h1>
+
+  <ng-container *ngIf="getHasAuthorityAdmin()">
+    <div class="grid-x align-center">
+      <div class="cell small-12 medium-4">
+        <a routerLink="/categories/addCategory" class="button success expanded add-btn">
+          + Add Category
+        </a>
+      </div>
+    </div>
+  </ng-container>
+
+  <table class="hover category-table">
+    <thead>
+      <tr>
+        <th 
+          (click)="sortCategories('productCategoryId')" 
+          [class.active-asc]="sortKey === 'productCategoryId' && sortDir === 'asc'"
+          [class.active-desc]="sortKey === 'productCategoryId' && sortDir === 'desc'">
+          Category Id
+        </th>
+        <th 
+          (click)="sortCategories('name')" 
+          [class.active-asc]="sortKey === 'name' && sortDir === 'asc'"
+          [class.active-desc]="sortKey === 'name' && sortDir === 'desc'">
+          Name
+        </th>
+        <th class="text-center no-sort">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-template ngFor let-tempCategory [ngForOf]="getPaginatedCategories()">
+        <tr>
+          <td [innerHTML]="tempCategory.productCategoryId"></td>
+          <td [innerHTML]="tempCategory.name"></td>
+          <td class="actions text-center">
+            <a class="button warning tiny update-btn"
+               [routerLink]="['/categories/updateCategory', tempCategory.productCategoryId]">
+              Update
+            </a>
+            <button class="button alert tiny delete-btn"
+                    (click)="deleteCategory(tempCategory.productCategoryId)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </tbody>
+  </table>
+
+  <div class="pagination-container text-center" *ngIf="getAllCategories().length > 0">
+    <button class="button secondary small"
+            (click)="prevPage()" [disabled]="getCurrentPage() == 1">
+      Previous
+    </button>
+    <span class="page-info">Page {{ getCurrentPage() }} of {{ getTotalPages() }}</span>
+    <button class="button secondary small"
+            (click)="nextPage()" [disabled]="getCurrentPage() == getTotalPages()">
+      Next
+    </button>
+  </div>
+</div>
+

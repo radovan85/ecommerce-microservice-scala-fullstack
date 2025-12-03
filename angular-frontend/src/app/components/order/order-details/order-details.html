@@ -1,0 +1,68 @@
+<div class="grid-container" style="margin-bottom: 8rem;margin-top: 8rem;">
+    <div class="grid-x align-center">
+      <div class="cell small-12 medium-10 large-8">
+  
+        <!-- Header -->
+        <div class="text-center margin-bottom-2">
+          <h1>Order</h1>
+          <p class="lead">Order, customer and product list</p>
+        </div>
+  
+        <!-- Customer Data -->
+        <div class="callout secondary radius shadow-card margin-bottom-2">
+          <h4>Customer</h4>
+          <p>
+            <span [innerHTML]="getUser().firstName + ' ' + getUser().lastName"></span><br>
+            <span [innerHTML]="getAddress().address"></span><br>
+            <span [innerHTML]="getAddress().city + ', ' + getAddress().state"></span><br>
+            <span [innerHTML]="getAddress().postcode"></span><br>
+            <span [innerHTML]="getAddress().country"></span><br><br>
+            <span [innerHTML]="'Order time: ' + getOrder().createTime"></span>
+          </p>
+        </div>
+  
+        <!-- Order Table -->
+        <table class="hover stack shadow-card">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>#</th>
+              <th>Price</th>
+              <th>Discount</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-template ngFor let-tempItem [ngForOf]="getOrderedItems()">
+              <tr>
+                <td [innerHTML]="tempItem.productName"></td>
+                <td [innerHTML]="tempItem.quantity"></td>
+                <td [innerHTML]="tempItem.productPrice"></td>
+                <td [innerHTML]="tempItem.productDiscount"></td>
+                <td [innerHTML]="tempItem.price"></td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </table>
+  
+        <!-- Total -->
+        <div class="text-center margin-top-3">
+          <h3>
+            <span [innerHTML]="'Order Price: €' + getOrderTotal().toFixed(2)"></span>
+          </h3>
+        </div>
+  
+        <!-- Options -->
+        <div class="grid-x grid-margin-x margin-top-3 align-center">
+          <div class="cell small-12 medium-shrink">
+            <button type="button" class="button secondary expanded" (click)="goBack()">Back</button>
+          </div>
+          <div class="cell small-12 medium-shrink">
+            <button type="button" class="button alert expanded" (click)="deleteOrder(getOrder().orderId)">Delete</button>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
