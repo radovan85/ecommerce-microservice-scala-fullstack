@@ -131,7 +131,7 @@ However, this manual approach lacks orchestration — Terraform ensures proper s
 🧪 Local Testing
 Once deployed, you can access:
 
-Grafana at http://localhost:3000 (default login: admin/admin)
+Grafana at http://localhost:3000 (default login: admin/grafana123)
 
 Prometheus at http://localhost:9090
 
