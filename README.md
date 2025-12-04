@@ -51,18 +51,12 @@ sudo chown 472:472 /opt/nomad-volumes/grafana
 🔍 Why this matters: Nomad validates all host_volume paths before starting. Grafana requires write access to /var/lib/grafana, which is mounted from the host. Without proper ownership, Grafana will fail with GF_PATHS_DATA is not writable.
 
 
-🧭 Starting Nomad Agent
-Once the volumes are created, you can start the Nomad agent using the provided configuration file:
-
-nomad agent -config=./nomad-config/nomad.hcl
-
-
-This launches Nomad in server + client mode, with Consul integration and Docker driver enabled. The agent will be ready to accept job submissions.
-
 📊 Create Prometheus Configuration
 To enable observability, Prometheus must be configured to scrape metrics from all microservices. Run the following command to generate prometheus.yml inside the mounted volume:
 
-sudo tee /opt/nomad-volumes/prometheus/prometheus.yml > /dev/null <<'EOF'
+sudo nano /opt/nomad-volumes/prometheus/prometheus.yml
+
+
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
@@ -71,45 +65,53 @@ scrape_configs:
   - job_name: 'api-gateway'
     metrics_path: '/prometheus'
     static_configs:
-      - targets: [ 'localhost:8080' ]
+      - targets: ['api-gateway:8080']
 
   - job_name: 'api-gateway-all'
     metrics_path: '/prometheus/metrics'
     static_configs:
-      - targets: [ 'localhost:8080' ]
+      - targets: ['api-gateway:8080']
 
   - job_name: 'auth-service'
     metrics_path: '/prometheus'
     static_configs:
-      - targets: [ 'localhost:8081' ]
+      - targets: ['localhost:8081']
 
   - job_name: 'customer-service'
     metrics_path: '/prometheus'
     static_configs:
-      - targets: [ 'localhost:8083' ]
+      - targets: ['localhost:8083']
 
   - job_name: 'cart-service'
     metrics_path: '/prometheus'
     static_configs:
-      - targets: [ 'localhost:9001' ]
+      - targets: ['localhost:9001']
 
   - job_name: 'product-service'
     metrics_path: '/prometheus'
     static_configs:
-      - targets: [ 'localhost:9002' ]
+      - targets: ['localhost:9002']
 
   - job_name: 'order-service'
     metrics_path: '/prometheus'
     static_configs:
-      - targets: [ 'localhost:9003' ]
+      - targets: ['localhost:9003']
 
   - job_name: 'prometheus'
     static_configs:
-      - targets: [ 'localhost:9090' ]
-EOF
+      - targets: ['localhost:9090']
+
 
 
 🧠 Note: This configuration ensures Prometheus scrapes metrics from all services using their respective ports and custom endpoints.
+
+🧭 Starting Nomad Agent
+Once the volumes are created, you can start the Nomad agent using the provided configuration file:
+
+nomad agent -config=./nomad-config/nomad.hcl
+
+
+This launches Nomad in server + client mode, with Consul integration and Docker driver enabled. The agent will be ready to accept job submissions.
 
 
 📦 Terraform Orchestration
@@ -134,6 +136,8 @@ Once deployed, you can access:
 Grafana at http://localhost:3000 (default login: admin/grafana123)
 
 Prometheus at http://localhost:9090
+
+Angular frontend at http://localhost:4200
 
 Microservices via their respective ports (see prometheus.yml for targets)
 
